@@ -365,6 +365,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
+		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* DTerm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTerm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -655,6 +656,7 @@
 				25E6515B0CF3B1440072997F /* ShortcutRecorder */,
 				32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */,
 				29B97316FDCFA39411CA2CEA /* main.m */,
+				586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */,
 			);
 			name = "Other Sources";
 			sourceTree = "<group>";
@@ -794,6 +796,11 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				TargetAttributes = {
+					8D1107260486CEB800E47090 = {
+						LastSwiftMigration = 0800;
+					};
+				};
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "DTerm" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1345,6 +1352,7 @@
 		C01FCF4B08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: mardmol@gmx.de (8T7YM75UNM)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = DTerm_Prefix.pch;
@@ -1353,8 +1361,12 @@
 				INFOPLIST_PREFIX_HEADER = $TARGET_BUILD_DIR/include/BZRRevision.h;
 				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = DTerm;
+				SWIFT_OBJC_BRIDGING_HEADER = "DTerm-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../3rd\\ party\\ source/Growl/Source";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;
@@ -1364,6 +1376,7 @@
 		C01FCF4C08A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: mardmol@gmx.de (8T7YM75UNM)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = DTerm_Prefix.pch;
@@ -1372,9 +1385,12 @@
 				INFOPLIST_PREFIX_HEADER = $TARGET_BUILD_DIR/include/BZRRevision.h;
 				INFOPLIST_PREPROCESS = YES;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = DTerm;
 				STRIP_INSTALLED_PRODUCT = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "DTerm-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 				USER_HEADER_SEARCH_PATHS = "$PROJECT_DIR/../3rd\\ party\\ source/Growl/Source";
 				WRAPPER_EXTENSION = app;
 				ZERO_LINK = NO;

@@ -14,6 +14,8 @@
 
 #import "DSLicenseFileFinder.h"
 
+#include <sys/xattr.h>
+
 NSString* DTResultsToKeepKey = @"DTResultsToKeep";
 NSString* DTHotkeyAlsoDeactivatesKey = @"DTHotkeyAlsoDeactivates";
 NSString* DTShowDockIconKey = @"DTShowDockIcon";
@@ -627,8 +629,6 @@ done:
 }
 
 #pragma mark stats tracking
-
-#include <sys/xattr.h>
 
 static NSString* DTNumCommandsRunKey = @"DTNumCommandsRun";
 static const char* DTNumCommandsRunXattrName = "net.decimus.dterm.commands";
