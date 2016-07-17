@@ -8,7 +8,6 @@
 #import "DTPrefsWindowController.h"
 #import "DTTermWindowController.h"
 #import "Finder.h"
-#import "GrowlApplicationBridge.h"
 //#import "Licensing.h"
 #import "PathFinder.h"
 #import "RTFWindowController.h"
@@ -92,17 +91,6 @@ OSStatus DTHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 	if(!AXAPIEnabled() && !AXIsProcessTrusted()) {
 		[self.prefsWindowController showAccessibility:self];
 	}
-//	else if(!IS_REGISTERED) {
-//		[self.prefsWindowController showRegistration:self];
-//	}
-	
-	// Workaround for Growl bug in Growl 1.1
-	[GrowlApplicationBridge setGrowlDelegate:@""];
-	
-//	if(!IS_REGISTERED) {
-//		[[NSGarbageCollector defaultCollector] disableCollectorForPointer:[[DSLicenseFileFinder alloc] initWithUTI:@"net.decimus.dterm.license"
-//																										  delegate:self]];
-//	}
 }
 
 - (BOOL)applicationShouldHandleReopen:(NSApplication *)theApplication hasVisibleWindows:(BOOL)flag {

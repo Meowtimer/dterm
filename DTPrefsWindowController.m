@@ -6,7 +6,6 @@
 #import "DTAppController.h"
 #import "DTPrefsAXController.h"
 #import "FontNameToDisplayNameTransformer.h"
-#import "Sparkle.h"
 #import "SRRecorderControl.h"
 
 #ifdef MAC_APP_STORE
@@ -43,7 +42,8 @@
 
 - (void)windowDidLoad {
 	[shortcutRecorder setAllowsKeyOnly:NO escapeKeysRecord:NO];
-	[shortcutRecorder setKeyCombo:[[NSApp delegate] hotKey]];
+	DTAppController* appController = (DTAppController*)NSApp.delegate;
+	[shortcutRecorder setKeyCombo:appController.hotKey];
 }
 
 - (void)windowDidBecomeKey:(NSNotification *)notification {

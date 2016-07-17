@@ -6,7 +6,6 @@
 #import "DTAppController.h"
 #import "DTPrefsWindowController.h"
 #import "DTTermWindowController.h"
-#import "GrowlApplicationBridge.h"
 
 
 #define DTUserDefault_ShellPath @"ShellPath"
@@ -163,13 +162,6 @@
 					NSString* lastLine = [lines lastObject];
 					if(![lastLine length])
 						lastLine = NSLocalizedString(@"<no results>", @"Growl notification description");
-					[GrowlApplicationBridge notifyWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Command finished: %@", @"Growl notification title"), self.command]
-												description:lastLine 
-										   notificationName:@"DTCommandCompleted"
-												   iconData:nil 
-												   priority:0 
-												   isSticky:NO 
-											   clickContext:nil];
 				}
 			}
 		}
