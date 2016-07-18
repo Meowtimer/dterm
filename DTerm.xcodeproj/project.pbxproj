@@ -54,7 +54,6 @@
 		257357BB0D10F231008E7D0F /* DSNumberFormatterTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 257357BA0D10F231008E7D0F /* DSNumberFormatterTransformer.m */; };
 		257357E60D10F987008E7D0F /* DSDecimalToIntegerTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 257357E50D10F987008E7D0F /* DSDecimalToIntegerTransformer.m */; };
 		2583733F0CFE105F00943791 /* DTResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2583733E0CFE105F00943791 /* DTResultsView.m */; };
-		258373440CFE12A000943791 /* DTRunManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258373430CFE12A000943791 /* DTRunManager.m */; };
 		258375660CFF47E600943791 /* DTCommandFieldEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 258375650CFF47E600943791 /* DTCommandFieldEditor.m */; };
 		25878A240D03399E00255595 /* DTProgressCancelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 25878A230D03399E00255595 /* DTProgressCancelButton.m */; };
 		25878BD80D03598500255595 /* ProgressWhite-11.png in Resources */ = {isa = PBXBuildFile; fileRef = 25878BCC0D03598500255595 /* ProgressWhite-11.png */; };
@@ -128,7 +127,6 @@
 		25FA3B3812E6118400DE744A /* DTTermWindowContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25229FF40CF8BEDE00DF702E /* DTTermWindowContentView.m */; };
 		25FA3B3912E6118400DE744A /* DTResultsTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2522A1010CFB540500DF702E /* DTResultsTextView.m */; };
 		25FA3B3A12E6118400DE744A /* DTResultsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2583733E0CFE105F00943791 /* DTResultsView.m */; };
-		25FA3B3B12E6118400DE744A /* DTRunManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 258373430CFE12A000943791 /* DTRunManager.m */; };
 		25FA3B3C12E6118400DE744A /* DTCommandFieldEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 258375650CFF47E600943791 /* DTCommandFieldEditor.m */; };
 		25FA3B3D12E6118400DE744A /* DTShellUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 257158E80CFF9A99007181F4 /* DTShellUtilities.m */; };
 		25FA3B3E12E6118400DE744A /* DTProgressCancelButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 25878A230D03399E00255595 /* DTProgressCancelButton.m */; };
@@ -297,8 +295,6 @@
 		257357E50D10F987008E7D0F /* DSDecimalToIntegerTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSDecimalToIntegerTransformer.m; sourceTree = "<group>"; };
 		2583733D0CFE105F00943791 /* DTResultsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTResultsView.h; sourceTree = "<group>"; };
 		2583733E0CFE105F00943791 /* DTResultsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTResultsView.m; sourceTree = "<group>"; };
-		258373420CFE12A000943791 /* DTRunManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTRunManager.h; sourceTree = "<group>"; };
-		258373430CFE12A000943791 /* DTRunManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTRunManager.m; sourceTree = "<group>"; };
 		258375640CFF47E600943791 /* DTCommandFieldEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTCommandFieldEditor.h; sourceTree = "<group>"; };
 		258375650CFF47E600943791 /* DTCommandFieldEditor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTCommandFieldEditor.m; sourceTree = "<group>"; };
 		25878A220D03399E00255595 /* DTProgressCancelButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTProgressCancelButton.h; sourceTree = "<group>"; };
@@ -431,8 +427,6 @@
 				25E651530CF3B0860072997F /* DTPrefsWindowController.m */,
 				25A8719F0D0B157F00D88D65 /* DTPrefsAXController.h */,
 				25A871A00D0B157F00D88D65 /* DTPrefsAXController.m */,
-				258373420CFE12A000943791 /* DTRunManager.h */,
-				258373430CFE12A000943791 /* DTRunManager.m */,
 				58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */,
 			);
 			name = Classes;
@@ -992,7 +986,6 @@
 				25FA3B3812E6118400DE744A /* DTTermWindowContentView.m in Sources */,
 				25FA3B3912E6118400DE744A /* DTResultsTextView.m in Sources */,
 				25FA3B3A12E6118400DE744A /* DTResultsView.m in Sources */,
-				25FA3B3B12E6118400DE744A /* DTRunManager.m in Sources */,
 				25FA3B3C12E6118400DE744A /* DTCommandFieldEditor.m in Sources */,
 				25FA3B3D12E6118400DE744A /* DTShellUtilities.m in Sources */,
 				25FA3B3E12E6118400DE744A /* DTProgressCancelButton.m in Sources */,
@@ -1034,7 +1027,6 @@
 				25229FF50CF8BEDE00DF702E /* DTTermWindowContentView.m in Sources */,
 				2522A1020CFB540500DF702E /* DTResultsTextView.m in Sources */,
 				2583733F0CFE105F00943791 /* DTResultsView.m in Sources */,
-				258373440CFE12A000943791 /* DTRunManager.m in Sources */,
 				258375660CFF47E600943791 /* DTCommandFieldEditor.m in Sources */,
 				257158E90CFF9A99007181F4 /* DTShellUtilities.m in Sources */,
 				25878A240D03399E00255595 /* DTProgressCancelButton.m in Sources */,
@@ -1360,6 +1352,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: mardmol@gmx.de (8T7YM75UNM)";
+				DEFINES_MODULE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = DTerm_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
@@ -1384,6 +1377,7 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: mardmol@gmx.de (8T7YM75UNM)";
+				DEFINES_MODULE = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = DTerm_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;

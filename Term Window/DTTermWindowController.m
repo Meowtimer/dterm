@@ -8,12 +8,12 @@
 #import "DTTermWindowContentView.h"
 #import "DTResultsView.h"
 #import "DTResultsTextView.h"
-#import "DTRunManager.h"
 #import "DTShellUtilities.h"
 //#import "Licensing.h"
 #import "iTerm.h"
 #import "iTerm2.h"
 #import "Terminal.h"
+#import "DTerm-Swift.h"
 
 static NSString* DTPreferencesContext = @"DTPreferencesContext";
 
@@ -250,10 +250,10 @@ static NSString* DTPreferencesContext = @"DTPreferencesContext";
 	
 //	if(IS_REGISTERED || (appController.numCommandsExecuted < 50)) {
 		appController.numCommandsExecuted++;
-		DTRunManager* runManager = [[DTRunManager alloc] initWithWD:self.workingDirectory
+		DTRunManager* runManager = [
+			[DTRunManager alloc] initWithWorkingDirectory:self.workingDirectory
 														  selection:self.selectedURLs
-															command:self.command
-														demoExpired:NO];
+															command:self.command];
 		[runsController addObject:runManager];
 //	} else {
 //		DTRunManager* runManager = [[DTRunManager alloc] initWithWD:NSHomeDirectory()

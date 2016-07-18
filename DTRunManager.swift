@@ -367,9 +367,140 @@ private var shellPath: String?;
 	}
 	
 	func handleEscapeSequenceWithType(type: Character, params: [String]) {
+		switch type {
+		case "m":
+			var fgColor = currentAttributes[NSForegroundColorAttributeName] as? NSColor
+			var bgColor = currentAttributes[NSBackgroundColorAttributeName] as? NSColor
+			
+			for paramString in params {
+				switch Int(paramString)! {
+					case 0:		// turn off all attributes
+						fgColor = nil
+						bgColor = nil
+						currentAttributes.removeValue(forKey: NSUnderlineStyleAttributeName)
+						currentAttributes[NSFontAttributeName] = NSFontManager.shared().convert(
+							currentAttributes[NSFontAttributeName] as! NSFont, toNotHaveTrait:NSFontTraitMask.boldFontMask
+						)
+					case 1:		// bold
+						currentAttributes[NSFontAttributeName] = NSFontManager.shared().convert(
+							currentAttributes[NSFontAttributeName] as! NSFont, toHaveTrait: NSFontTraitMask.boldFontMask
+						)
+					case 4:		// underline single
+						currentAttributes[NSUnderlineStyleAttributeName] = NSNumber(value: NSUnderlineStyle.styleSingle.rawValue)
+					case 5:		// blink
+						break
+						// not supported
+					case 7:		// FG black on BG white
+						fgColor = NSColor.black()
+						bgColor = NSColor.white()
+					case 8:		// "hidden"
+						fgColor = bgColor
+					case 21:	// underline double
+						currentAttributes[NSUnderlineStyleAttributeName] = NSNumber(value: NSUnderlineStyle.styleDouble.rawValue)
+					case 22:	// stop bold
+						currentAttributes[NSFontAttributeName] = NSFontManager.shared().convert(currentAttributes[NSFontAttributeName] as! NSFont, toNotHaveTrait:NSFontTraitMask.boldFontMask)
+					case 24:	// underline none
+						currentAttributes[NSUnderlineStyleAttributeName] = NSNumber(value: NSUnderlineStyle.styleNone.rawValue)
+					case 30:	// FG black
+						fgColor = NSColor.black()
+					case 31:	// FG red
+						fgColor = NSColor.red()
+					case 32:	// FG green
+						fgColor = NSColor.green()
+					case 33:	// FG yellow
+						fgColor = NSColor.yellow()
+					case 34:	// FG blue
+						fgColor = NSColor.blue()
+					case 35:	// FG magenta
+						fgColor = NSColor.magenta()
+					case 36:	// FG cyan
+						fgColor = NSColor.cyan()
+					case 37:	// FG white
+						fgColor = NSColor.white()
+					case 39:	// FG reset
+						fgColor = nil
+					case 40:	// BG black
+						bgColor = NSColor.black()
+					case 41:	// BG red
+						bgColor = NSColor.red()
+					case 42:	// BG green
+						bgColor = NSColor.green()
+					case 43:	// BG yellow
+						bgColor = NSColor.yellow()
+					case 44:	// BG blue
+						bgColor = NSColor.blue()
+					case 45:	// BG magenta
+						bgColor = NSColor.magenta()
+					case 46:	// BG cyan
+						bgColor = NSColor.cyan()
+					case 47:	// BG white
+						bgColor = NSColor.white()
+					case 49:	// BG reset
+						bgColor = nil
+					case 90:	// FG bright black
+						fgColor = NSColor.black()
+					case 91:	// FG bright red
+						fgColor = NSColor.red()
+					case 92:	// FG bright green
+						fgColor = NSColor.green()
+					case 93:	// FG bright yellow
+						fgColor = NSColor.yellow()
+					case 94:	// FG bright blue
+						fgColor = NSColor.blue()
+					case 95:	// FG bright magenta
+						fgColor = NSColor.magenta()
+					case 96:	// FG bright cyan
+						fgColor = NSColor.cyan()
+					case 97:	// FG bright white
+						fgColor = NSColor.white()
+					case 100:	// BG bright black
+						bgColor = NSColor.black()
+					case 101:	// BG bright red
+						bgColor = NSColor.red()
+					case 102:	// BG bright green
+						bgColor = NSColor.green()
+					case 103:	// BG bright yellow
+						bgColor = NSColor.yellow()
+					case 104:	// BG bright blue
+						bgColor = NSColor.blue()
+					case 105:	// BG bright magenta
+						bgColor = NSColor.magenta()
+					case 106:	// BG bright cyan
+						bgColor = NSColor.cyan()
+					case 107:	// BG bright white
+						bgColor = NSColor.white()
+					default:
+						break
+				}
+			}
+			
+			let standardFGColor = NSKeyedUnarchiver.unarchiveObject(with: UserDefaults.standard().object(forKey: DTTextColorKey) as! Data) as! NSColor
+			fgColor = fgColor != nil ? fgColor!.withAlphaComponent(standardFGColor.alphaComponent) : standardFGColor
+			bgColor = bgColor!.withAlphaComponent(standardFGColor.alphaComponent)
+			
+			currentAttributes[NSForegroundColorAttributeName] = fgColor
+			if let bgColor = bgColor {
+				currentAttributes[NSBackgroundColorAttributeName] = bgColor
+			} else {
+				currentAttributes.removeValue(forKey: NSBackgroundColorAttributeName)
+			}
+			
+		default:
+			// If we don't handle it, just ignore it
+			break
+#if DEVBUILD
+			print("Got \(type) escape sequence with: \(params)")
+#endif
+		}
 	}
 
     @IBAction public func cancel(_ sender: AnyObject!) {
+		if task?.isRunning ?? false {
+			kill(task!.processIdentifier, SIGHUP)
+		}
+		self.task = nil
+		stdOut = nil
+		stdErr = nil
 	}
 
 }
