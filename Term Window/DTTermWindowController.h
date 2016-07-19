@@ -5,15 +5,15 @@
 @class DTResultsTextView;
 
 @interface DTTermWindowController : NSWindowController {
-	NSString* workingDirectory;
-	NSArray* selectedURLs;
 	
-	NSString* command;
+	
+	
+	
 	IBOutlet NSPopUpButton* actionButton;
 	IBOutlet NSMenu* actionMenu;
 	
-	NSMutableArray* runs;
-	IBOutlet NSArrayController* runsController;
+	
+	
 	IBOutlet NSView* placeholderForResultsView;
 	IBOutlet DTResultsView* resultsView;
 	IBOutlet DTResultsTextView* resultsTextView;
@@ -26,7 +26,7 @@
 @property (assign) NSArray* selectedURLs;
 @property (assign) NSString* command;
 @property (assign) NSMutableArray* runs;
-@property (assign) NSArrayController* runsController;
+@property (assign) IBOutlet NSArrayController* runsController;
 
 - (void)activateWithWorkingDirectory:(NSString*)wdPath
 						   selection:(NSArray*)selection

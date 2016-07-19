@@ -2,8 +2,6 @@
 
 
 @interface RTFWindowController : NSWindowController {
-	NSString* rtfPath;
-	NSString* windowTitle;
 }
 
 @property (assign) NSString* rtfPath;

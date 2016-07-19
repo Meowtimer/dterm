@@ -17,9 +17,6 @@ extern NSString* DTFontNameKey;
 extern NSString* DTFontSizeKey;
 
 @interface DTAppController : NSObject {
-#ifndef MAC_APP_STORE
-	IBOutlet SUUpdater* sparkleUpdater;
-#endif
 	DTPrefsWindowController* prefsWindowController;
 	DTTermWindowController* termWindowController;
 	

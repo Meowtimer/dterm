@@ -10,9 +10,9 @@ NSString* newUniqueID() {
 	myUUID = CFUUIDCreate(kCFAllocatorDefault);
 	
 	if(myUUID != NULL) {
-		myUUIDString = (NSString*)CFUUIDCreateString(kCFAllocatorDefault, myUUID);
+		myUUIDString = (NSString*)CFBridgingRelease(CFUUIDCreateString(kCFAllocatorDefault, myUUID));
 		CFRelease(myUUID);
 	}
 	
-	return [myUUIDString autorelease];
+	return myUUIDString;
 }

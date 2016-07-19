@@ -29,9 +29,9 @@ static NSString* DTPreferencesContext = @"DTPreferencesContext";
 		self.runs = [NSMutableArray array];
 		
 		NSUserDefaultsController *sdc = [NSUserDefaultsController sharedUserDefaultsController];
-		[sdc addObserver:self forKeyPath:@"values.DTTextColor" options:0 context:DTPreferencesContext];
-		[sdc addObserver:self forKeyPath:@"values.DTFontName" options:0 context:DTPreferencesContext];
-		[sdc addObserver:self forKeyPath:@"values.DTFontSize" options:0 context:DTPreferencesContext];
+		[sdc addObserver:self forKeyPath:@"values.DTTextColor" options:0 context:(__bridge void * _Nullable)(DTPreferencesContext)];
+		[sdc addObserver:self forKeyPath:@"values.DTFontName" options:0 context:(__bridge void * _Nullable)(DTPreferencesContext)];
+		[sdc addObserver:self forKeyPath:@"values.DTFontSize" options:0 context:(__bridge void * _Nullable)(DTPreferencesContext)];
 	}
 	
 	return self;
@@ -188,7 +188,7 @@ static NSString* DTPreferencesContext = @"DTPreferencesContext";
 						withObject:self
 						afterDelay:0.11f];
 	
-	[[NSApp delegate] saveStats];
+	[(DTAppController*)[NSApp delegate] saveStats];
 }
 
 - (void)windowDidResignKey:(NSNotification*)notification {
@@ -428,10 +428,11 @@ static NSString* DTPreferencesContext = @"DTPreferencesContext";
 	for(NSString* completion in completionsSet) {
 		NSString* actualPath = ([completion hasPrefix:@"/"] ? completion : [workingDirectory stringByAppendingPathComponent:completion]);
 		BOOL isDirectory = NO;
-		if([fileManager fileExistsAtPath:actualPath isDirectory:&isDirectory] && isDirectory)
-			completion = [completion stringByAppendingString:@"/"];
+		NSString* completionToAdd = [fileManager fileExistsAtPath:actualPath isDirectory:&isDirectory] && isDirectory
+			? [completion stringByAppendingString:@"/"]
+			: completion;
 		
-		[completions addObject:completion];
+		[completions addObject:completionToAdd];
 	}
 	
 	if(![completions count])
@@ -451,7 +452,7 @@ static NSString* DTPreferencesContext = @"DTPreferencesContext";
 					  ofObject:(id)object
 						change:(NSDictionary *)change
 					   context:(void *)context {
-	if(context != DTPreferencesContext){
+	if(context != (__bridge void * _Nullable)(DTPreferencesContext)){
 		[super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
 		return;
 	}

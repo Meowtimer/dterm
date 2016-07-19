@@ -69,7 +69,7 @@
 - (void)shortcutRecorder:(SRRecorderControl *)aRecorder
 	   keyComboDidChange:(KeyCombo)newKeyCombo {
 //	NSLog(@"New key combo: key code %d, flags %d", newKeyCombo.code, newKeyCombo.flags);
-	[[NSApp delegate] setHotKey:newKeyCombo];
+	[(DTAppController*)[NSApp delegate] setHotKey:newKeyCombo];
 }
 
 - (void)showView:(NSView*)prefsView {
@@ -198,7 +198,7 @@
 
 #ifndef MAC_APP_STORE
 - (IBAction)checkForUpdatesNow:(id)sender {
-	[[[NSApp delegate] sparkleUpdater] checkForUpdates:sender];
+	//[[[NSApp delegate] sparkleUpdater] checkForUpdates:sender];
 }
 #endif
 

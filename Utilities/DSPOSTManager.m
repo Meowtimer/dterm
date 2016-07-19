@@ -4,7 +4,7 @@
 
 static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType type, void *clientCallBackInfo) {
     // Pass off to the object to handle.
-    [((DSPOSTManager*)clientCallBackInfo) handleNetworkEvent:type];
+    [((__bridge DSPOSTManager*)clientCallBackInfo) handleNetworkEvent:type];
 }
 
 @implementation DSPOSTManager
@@ -14,11 +14,11 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 	  delegate:(id)delegate
 	  selector:(SEL)selector
    contextInfo:(void*)contextInfo {
-	return [[[DSPOSTManager alloc] initWithData:data
+	return [[DSPOSTManager alloc] initWithData:data
 											URL:url
 									   delegate:delegate
 									   selector:selector
-									contextInfo:contextInfo] autorelease];
+									contextInfo:contextInfo];
 }
 
 - (id)initWithData:(NSDictionary*)_data
@@ -39,7 +39,7 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 			NSString* escapedKey = [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 			
 			NSString* value = [_data objectForKey:key];
-			NSMutableString* escapedValue = [[[value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] mutableCopy] autorelease];
+			NSMutableString* escapedValue = [[value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding] mutableCopy];
 			[escapedValue replaceOccurrencesOfString:@"+" withString:@"%2B" options:NSLiteralSearch range:NSMakeRange(0, [value length])];
 			
 			NSString* pairString = [NSString stringWithFormat:@"%@=%@", escapedKey, escapedValue];
@@ -50,28 +50,26 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 		}
 		
 		// Create a new HTTP request
-		CFHTTPMessageRef request = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (CFURLRef)_url, kCFHTTPVersion1_1);
+		CFHTTPMessageRef request = CFHTTPMessageCreateRequest(kCFAllocatorDefault, CFSTR("POST"), (__bridge CFURLRef)_url, kCFHTTPVersion1_1);
 		if(!request) {
 			NSLog(@"Couldn't create an HTTP request to submit purchasing data");
-			[self release];
 			return nil;
 		}
 		
 		// Set headers and body
 		CFHTTPMessageSetHeaderFieldValue(request,CFSTR("content-type"),CFSTR("application/x-www-form-urlencoded"));
-		CFHTTPMessageSetBody(request, (CFDataRef)sendData);
+		CFHTTPMessageSetBody(request, (__bridge CFDataRef)sendData);
 		
 		// Create the stream for the request
 		stream = CFReadStreamCreateForHTTPRequest(kCFAllocatorDefault,request);
 		if(!stream) {
 			NSLog(@"Couldn't create stream to submit purchasing data");
 			CFRelease(request); request = nil;
-			[self release];
 			return nil;
 		}
 		
 		// Set the stream client
-		CFStreamClientContext context = { 0, self, NULL, NULL, NULL };
+		CFStreamClientContext context = { 0, (__bridge void *)(self), NULL, NULL, NULL };
 		if(!CFReadStreamSetClient(stream,
 								  kCFStreamEventOpenCompleted | kCFStreamEventHasBytesAvailable | kCFStreamEventEndEncountered | kCFStreamEventErrorOccurred,
 								  POSTReadStreamCallBack,
@@ -79,7 +77,6 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 			CFRelease(stream); stream = nil;
 			CFRelease(request); request = nil;
 			NSLog(@"Couldn't set the stream's client to submit purchasing data");
-			[self release];
 			return nil;
 		}
 		
@@ -93,7 +90,6 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 			CFRelease(stream); stream = nil;
 			CFRelease(request); request = nil;
 			NSLog(@"Couldn't open the stream to submit purchasing data");
-			[self release];
 			return nil;
 		}
 		
@@ -101,8 +97,7 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
 		CFRelease(request); request = nil;
 		
 		// Ensure we stay around to hear our callbacks
-		[self retain];
-		[[NSGarbageCollector defaultCollector] disableCollectorForPointer:self];
+		// FIXME STILL NECESSARY?
 	}
 	
 	return self;
@@ -177,11 +172,9 @@ static void POSTReadStreamCallBack(CFReadStreamRef stream, CFStreamEventType typ
     CFRelease(stream); stream = nil;
 	
 	// Nor do we need results
-	[results release]; results = nil;
+	results = nil;
 	
 	// And finally, we ourselves are now useless; allow ourselves to be released (balancing the retain/disableCollector in init)
-	[self autorelease];
-	[[NSGarbageCollector defaultCollector] enableCollectorForPointer:self];
 }
 
 

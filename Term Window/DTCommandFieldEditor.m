@@ -96,10 +96,9 @@
 	
 	NSMutableArray* completions = [NSMutableArray arrayWithCapacity:[rawCompletions count]];
 	for(NSString* completion in rawCompletions) {
-		if(shouldBeEscaped)
-			completion = escapedPath(completion);
+		NSString* completionToAdd = shouldBeEscaped ? escapedPath(completion) : completion;
 		
-		[completions addObject:completion];
+		[completions addObject:completionToAdd];
 	}
 	
 	@try {
@@ -143,7 +142,7 @@
 
 // We don't want this to eat our font changes
 - (void)changeFont:(id)sender {
-	[[NSApp delegate] changeFont:sender];
+	[(DTAppController*)[NSApp delegate] changeFont:sender];
 }
 
 @end

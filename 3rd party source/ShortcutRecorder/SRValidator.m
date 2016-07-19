@@ -65,13 +65,13 @@
 	}
 	
 	// then our implementation...
-	NSArray *globalHotKeys;
+	CFArrayRef globalHotKeys;
 	
 	// get global hot keys...
-	if ( CopySymbolicHotKeys((CFArrayRef *)&globalHotKeys ) != noErr )
+	if ( CopySymbolicHotKeys(&globalHotKeys ) != noErr )
 		return YES;
 	
-	NSEnumerator *globalHotKeysEnumerator = [globalHotKeys objectEnumerator];
+	NSEnumerator *globalHotKeysEnumerator = [(__bridge NSArray*)globalHotKeys objectEnumerator];
 	NSDictionary *globalHotKeyInfoDictionary;
 	int32_t globalHotKeyFlags;
 	NSInteger globalHotKeyCharCode;
@@ -87,7 +87,7 @@
 	while (( globalHotKeyInfoDictionary = [globalHotKeysEnumerator nextObject] ))
 	{
 		// Only check if global hotkey is enabled
-		if ( (CFBooleanRef)[globalHotKeyInfoDictionary objectForKey:(NSString *)kHISymbolicHotKeyEnabled] != kCFBooleanTrue )
+		if ( (__bridge CFBooleanRef)[globalHotKeyInfoDictionary objectForKey:(NSString *)kHISymbolicHotKeyEnabled] != kCFBooleanTrue )
             continue;
 		
         globalCommandMod    = NO;
