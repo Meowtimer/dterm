@@ -22,11 +22,11 @@
 	DTCommandFieldEditor* commandFieldEditor;
 }
 
-@property (assign) NSString* workingDirectory;
-@property (assign) NSArray* selectedURLs;
-@property (assign) NSString* command;
-@property (assign) NSMutableArray* runs;
-@property (assign) IBOutlet NSArrayController* runsController;
+@property (strong) NSString* workingDirectory;
+@property (strong) NSArray* selectedURLs;
+@property (strong) NSString* command;
+@property (strong) NSMutableArray* runs;
+@property (strong) IBOutlet NSArrayController* runsController;
 
 - (void)activateWithWorkingDirectory:(NSString*)wdPath
 						   selection:(NSArray*)selection
