@@ -43,9 +43,9 @@ private var shellPath: String?;
 	}
     
     public static let shellPath: String! = {
-		var sharedPath = UserDefaults.standard().string(forKey: DTUserDefault_ShellPath)
+		var sharedPath = UserDefaults.standard.string(forKey: DTUserDefault_ShellPath)
 		if sharedPath == nil || !sharedPath!.hasPrefix("/") {
-			let env = ProcessInfo.processInfo().environment
+			let env = ProcessInfo.processInfo.environment
 			sharedPath = env["SHELL"]
 		}
 		if sharedPath == nil {
@@ -68,7 +68,7 @@ private var shellPath: String?;
 
     public init!(withWorkingDirectory: String, selection: [String], command: String) {
 	
-		let userDefaults = UserDefaults.standard()
+		let userDefaults = UserDefaults.standard
 	
 		self.resultsStorage = NSTextStorage()
 		self.cursorLoc = 0
@@ -127,14 +127,14 @@ private var shellPath: String?;
 		task.launch()
 		setegid(savedEGID)
 		
-		NotificationCenter.default().addObserver(
+		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(readData(notification:)),
 			name: FileHandle.readCompletionNotification,
 			object: stdOut
 		)
 		
-		NotificationCenter.default().addObserver(
+		NotificationCenter.default.addObserver(
 			self,
 			selector: #selector(readData(notification:)),
 			name: FileHandle.readCompletionNotification,
@@ -147,8 +147,8 @@ private var shellPath: String?;
 	
 	func readData(notification: Notification) {
 		let fileHandle = notification.object as! FileHandle
-		if fileHandle == stdOut || fileHandle == stdErr, let userInfo = notification.userInfo as? [String:AnyObject] {
-			if let data = userInfo[NSFileHandleNotificationDataItem] as? Data where data.count > 0 {
+		if fileHandle == stdOut || fileHandle == stdErr, let userInfo = notification.userInfo {
+			if let data = userInfo[NSFileHandleNotificationDataItem] as? Data, data.count > 0 {
 				unprocessedResultsData = unprocessedResultsData + data
 				processResultsData()
 				fileHandle.readInBackgroundAndNotify()
@@ -161,11 +161,10 @@ private var shellPath: String?;
 				}
 				if stdOut == nil && stdErr == nil {
 					task = nil
-					if let termWindowController = (NSApp.delegate as! DTAppController).termWindowController
-						where !(
-							termWindowController.window?.isVisible ?? false &&
-							termWindowController.runsController.selectedObjects.contains { $0 as? NSObject == self ?? false }
-						) {
+					if let termWindowController = (NSApp.delegate as! DTAppController).termWindowController, !(
+						termWindowController.window?.isVisible ?? false &&
+						termWindowController.runsController.selectedObjects.contains { $0 === self }
+					) {
 						let lines = self.resultString.components(separatedBy: .newlines)
 						var lastLine = lines.last
 						if lastLine == nil || lastLine?.characters.count == 0 {
@@ -175,7 +174,7 @@ private var shellPath: String?;
 						userNotification.title = String(format: NSLocalizedString("Command finished", comment: "Notification Title"), self.command)
 						userNotification.informativeText = lastLine
 						
-						NSUserNotificationCenter.default().deliver(userNotification)
+						NSUserNotificationCenter.default.deliver(userNotification)
 						
 						/*
 						
@@ -474,7 +473,7 @@ private var shellPath: String?;
 				}
 			}
 			
-			let standardFGColor = NSKeyedUnarchiver.unarchiveObject(with: UserDefaults.standard().object(forKey: DTTextColorKey) as! Data) as! NSColor
+			let standardFGColor = NSKeyedUnarchiver.unarchiveObject(with: UserDefaults.standard.object(forKey: DTTextColorKey) as! Data) as! NSColor
 			fgColor = fgColor != nil ? fgColor!.withAlphaComponent(standardFGColor.alphaComponent) : standardFGColor
 			bgColor = bgColor!.withAlphaComponent(standardFGColor.alphaComponent)
 			
