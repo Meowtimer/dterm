@@ -150,6 +150,7 @@
 		25FA3BBD12E6196400DE744A /* MainMenuMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BBB12E6196400DE744A /* MainMenuMAS.xib */; };
 		25FA3BDA12E61ACA00DE744A /* PreferencesMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BD812E61ACA00DE744A /* PreferencesMAS.xib */; };
 		25FA401212F069D300DE744A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FA401112F069D300DE744A /* WebKit.framework */; };
+		5820F3DA1D4D702C0017648F /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820F3D91D4D702C0017648F /* DTTermWindowController.swift */; };
 		58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -362,6 +363,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
+		5820F3D91D4D702C0017648F /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
 		58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTRunManager.swift; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -495,6 +497,7 @@
 				25878A230D03399E00255595 /* DTProgressCancelButton.m */,
 				251D0E5D0D7CA32E00E9E49D /* DTAntialiasControllableTextField.h */,
 				251D0E5E0D7CA32E00E9E49D /* DTAntialiasControllableTextField.m */,
+				5820F3D91D4D702C0017648F /* DTTermWindowController.swift */,
 			);
 			path = "Term Window";
 			sourceTree = "<group>";
@@ -1025,6 +1028,7 @@
 				25E6517F0CF3B1620072997F /* SRValidator.m in Sources */,
 				2529F6BC0CF4CD0700CDF456 /* DTBlackRedStatusTransformer.m in Sources */,
 				25229FF50CF8BEDE00DF702E /* DTTermWindowContentView.m in Sources */,
+				5820F3DA1D4D702C0017648F /* DTTermWindowController.swift in Sources */,
 				2522A1020CFB540500DF702E /* DTResultsTextView.m in Sources */,
 				2583733F0CFE105F00943791 /* DTResultsView.m in Sources */,
 				258375660CFF47E600943791 /* DTCommandFieldEditor.m in Sources */,

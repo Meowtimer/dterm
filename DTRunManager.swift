@@ -18,14 +18,12 @@ private var shellPath: String?;
 
 @objc public class DTRunManager : NSObject {
 
-    public var workingDirectory: String!
+    public var workingDirectory: String
     public var selectedURLStrings: [AnyObject]!
 	
-	public private(set) var command: String!
-	
-    public private(set) var resultsStorage: NSTextStorage!
+	public private(set) var command: String
+    public private(set) var resultsStorage: NSTextStorage
 	private var cursorLoc: Int
-	
 	private var resultString: NSString { return resultsStorage.string as NSString }
 
     public func setDisplayFont(_ font: NSFont) {
@@ -105,9 +103,10 @@ private var shellPath: String?;
 		launch()
 	}
 	
-	var task: Task!
-	var stdOut: FileHandle!
-	var stdErr: FileHandle!
+	public var task: Task!
+	
+	var stdOut: FileHandle?
+	var stdErr: FileHandle?
 	var unprocessedResultsData: [Character]
 	
 	func launch() {
@@ -127,67 +126,52 @@ private var shellPath: String?;
 		task.launch()
 		setegid(savedEGID)
 		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(readData(notification:)),
-			name: FileHandle.readCompletionNotification,
-			object: stdOut
-		)
-		
-		NotificationCenter.default.addObserver(
-			self,
-			selector: #selector(readData(notification:)),
-			name: FileHandle.readCompletionNotification,
-			object: stdErr
-		)
-		
-		stdOut.readInBackgroundAndNotify()
-		stdErr.readInBackgroundAndNotify()
+		let fileHandles = [stdOut, stdErr]
+		fileHandles.forEach {
+			NotificationCenter.default.addObserver(
+				self,
+				selector: #selector(readData(notification:)),
+				name: FileHandle.readCompletionNotification,
+				object: $0
+			)
+		}
+		fileHandles.forEach { $0?.readInBackgroundAndNotify() }
 	}
 	
 	func readData(notification: Notification) {
-		let fileHandle = notification.object as! FileHandle
-		if fileHandle == stdOut || fileHandle == stdErr, let userInfo = notification.userInfo {
-			if let data = userInfo[NSFileHandleNotificationDataItem] as? Data, data.count > 0 {
-				unprocessedResultsData = unprocessedResultsData + data
-				processResultsData()
-				fileHandle.readInBackgroundAndNotify()
-			} else {
-				if fileHandle == stdOut {
-					stdOut = nil
-				}
-				if fileHandle == stdErr {
-					stdErr = nil
-				}
-				if stdOut == nil && stdErr == nil {
-					task = nil
-					if let termWindowController = (NSApp.delegate as! DTAppController).termWindowController, !(
-						termWindowController.window?.isVisible ?? false &&
-						termWindowController.runsController.selectedObjects.contains { $0 === self }
-					) {
-						let lines = self.resultString.components(separatedBy: .newlines)
-						var lastLine = lines.last
-						if lastLine == nil || lastLine?.characters.count == 0 {
-							lastLine = NSLocalizedString("<no results>", comment: "Notification Description")
-						}
-						let userNotification = NSUserNotification()
-						userNotification.title = String(format: NSLocalizedString("Command finished", comment: "Notification Title"), self.command)
-						userNotification.informativeText = lastLine
-						
-						NSUserNotificationCenter.default.deliver(userNotification)
-						
-						/*
-						
-						[GrowlApplicationBridge notifyWithTitle:[NSString stringWithFormat:NSLocalizedString(@"Command finished: %@", @"Growl notification title"), self.command]
-												description:lastLine 
-										   notificationName:@"DTCommandCompleted"
-												   iconData:nil 
-												   priority:0 
-												   isSticky:NO 
-											   clickContext:nil];
-						
-						*/
+		guard
+			let fileHandle = notification.object as? FileHandle,
+			let userInfo = notification.userInfo,
+			fileHandle === stdOut || fileHandle === stdErr
+		else { return }
+		
+		if let data = userInfo[NSFileHandleNotificationDataItem] as? Data, data.count > 0 {
+			unprocessedResultsData = unprocessedResultsData + data
+			processResultsData()
+			fileHandle.readInBackgroundAndNotify()
+		} else {
+			if fileHandle == stdOut {
+				stdOut = nil
+			}
+			if fileHandle == stdErr {
+				stdErr = nil
+			}
+			if stdOut == nil && stdErr == nil {
+				task = nil
+				if let termWindowController = (NSApp.delegate as! DTAppController).termWindowController, !(
+					termWindowController.window?.isVisible ?? false ||
+					!termWindowController.runsController.selectedObjects.contains { $0 === self }
+				) {
+					let lines = self.resultString.components(separatedBy: .newlines)
+					var lastLine = lines.last
+					if lastLine == nil || lastLine?.characters.count == 0 {
+						lastLine = NSLocalizedString("<no results>", comment: "Notification Description")
 					}
+					let userNotification = NSUserNotification()
+					userNotification.title = String(format: NSLocalizedString("Command finished", comment: "Notification Title"), self.command)
+					userNotification.informativeText = lastLine
+					
+					NSUserNotificationCenter.default.deliver(userNotification)
 				}
 			}
 		}
@@ -253,7 +237,10 @@ private var shellPath: String?;
 					}
 				
 					let escapeString = String(data[index..<index+lengthOfEscapeString])
-					handleEscapeSequenceWithType(type: at(relativeIndex: lengthOfEscapeString), params: escapeString.components(separatedBy: ";"))
+					handleEscapeSequenceWithType(
+						type: at(relativeIndex: lengthOfEscapeString),
+						params: escapeString.components(separatedBy: ";")
+					)
 				
 					index += lengthOfEscapeString + 1
 				
@@ -356,7 +343,7 @@ private var shellPath: String?;
 		
 	}
 	
-	func cancel(sender: AnyObject) {
+	@IBAction public func cancel(sender: AnyObject) {
 		if task.isRunning {
 			kill(task.processIdentifier, SIGHUP)
 		}
@@ -491,15 +478,6 @@ private var shellPath: String?;
 			print("Got \(type) escape sequence with: \(params)")
 #endif
 		}
-	}
-
-    @IBAction public func cancel(_ sender: AnyObject!) {
-		if task?.isRunning ?? false {
-			kill(task!.processIdentifier, SIGHUP)
-		}
-		self.task = nil
-		stdOut = nil
-		stdErr = nil
 	}
 
 }
