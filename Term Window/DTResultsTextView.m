@@ -3,9 +3,9 @@
 #import "DTResultsTextView.h"
 #import "DTerm-Swift.h"
 
-@implementation DTResultsTextView
-
-@synthesize disableAntialiasing;
+@implementation DTResultsTextView {
+	BOOL _disableAntialiasing;
+}
 
 + (void)initialize {
 	[DTResultsTextView exposeBinding:@"resultsStorage"];
@@ -24,8 +24,12 @@
 }
 
 - (void)setDisableAntialiasing:(BOOL)b {
-	disableAntialiasing = b;
+	_disableAntialiasing = b;
 	[self setNeedsDisplay:YES];
+}
+
+- (BOOL)disableAntialiasing {
+	return _disableAntialiasing;
 }
 
 - (void)drawRect:(NSRect)aRect {
@@ -43,10 +47,7 @@
 }
 
 - (NSTextStorage*)resultsStorage {
-	if(validResultsStorage)
-		return [[self layoutManager] textStorage];
-	else
-		return nil;
+	return validResultsStorage ? [[self layoutManager] textStorage] : nil;
 }
 
 - (void)setResultsStorage:(NSTextStorage*)newResults {

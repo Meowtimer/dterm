@@ -38,9 +38,9 @@ private var DTPreferencesContext = 0
 		actionButton.bezelStyle = .smallSquare
 		
 		resultsTextView.bind(
-			"resultsStorage",
+			#keyPath(DTResultsTextView.resultsStorage),
 			to: runsController,
-			withKeyPath: "selection.resultsStorage",
+			withKeyPath: #keyPath(NSArrayController.selection.resultsStorage),
 			options: nil
 		)
 		

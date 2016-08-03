@@ -9,6 +9,7 @@
 }
 
 @property BOOL disableAntialiasing;
+@property NSTextStorage* resultsStorage;
 
 - (NSSize)minSizeForContent;
 - (CGFloat)desiredHeightChange;
