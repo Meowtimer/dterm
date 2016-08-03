@@ -63,14 +63,10 @@ private var shellPath: String?;
 	
 	private var currentAttributes: [String:AnyObject]
 	private var trailingWhitespace: NSAttributedString?
-
-    public init!(withWorkingDirectory: String, selection: [URL], command: String) {
 	
+	static func getCurrentAttributesFromDefaults() -> [String:AnyObject] {
 		let userDefaults = UserDefaults.standard
-	
-		self.resultsStorage = NSTextStorage()
-		self.cursorLoc = 0
-		self.currentAttributes = [
+		return [
 			NSFontAttributeName: NSFont(
 				name: userDefaults.string(forKey: DTFontNameKey)!,
 				size: CGFloat(userDefaults.double(forKey: DTFontSizeKey))
@@ -79,6 +75,22 @@ private var shellPath: String?;
 				with: userDefaults.data(forKey: DTTextColorKey)!
 			)!
 		]
+	}
+	
+	public override init() {
+		workingDirectory = ""
+		command = ""
+		resultsStorage = NSTextStorage()
+		cursorLoc = 0
+		currentAttributes = DTRunManager.getCurrentAttributesFromDefaults()
+		unprocessedResults = []
+	}
+
+    public init(withWorkingDirectory: String, selection: [URL], command: String) {
+	
+		self.resultsStorage = NSTextStorage()
+		self.cursorLoc = 0
+		self.currentAttributes = DTRunManager.getCurrentAttributesFromDefaults()
 		self.workingDirectory = withWorkingDirectory
 		self.selectedURLStrings = selection
 		self.command = command
@@ -95,7 +107,7 @@ private var shellPath: String?;
 			unsetenv(environmentKey)
 		}
 		
-		self.unprocessedResultsData = []
+		self.unprocessedResults = []
 		
 		super.init()
 		
@@ -106,7 +118,7 @@ private var shellPath: String?;
 	
 	var stdOut: FileHandle?
 	var stdErr: FileHandle?
-	var unprocessedResultsData: [Character]
+	var unprocessedResults: [Character]
 	
 	func launch() {
 		task = Task()
@@ -145,7 +157,7 @@ private var shellPath: String?;
 		else { return }
 		
 		if let data = userInfo[NSFileHandleNotificationDataItem] as? Data, data.count > 0 {
-			unprocessedResultsData = unprocessedResultsData + data
+			unprocessedResults = unprocessedResults + data
 			processResultsData()
 			fileHandle.readInBackgroundAndNotify()
 		} else {
@@ -177,9 +189,9 @@ private var shellPath: String?;
 	}
 	
 	func processResultsData() {
-		guard unprocessedResultsData.count == 0 else { return }
+		guard unprocessedResults.count == 0 else { return }
 		
-		var data = unprocessedResultsData
+		var data = unprocessedResults
 		let count = data.count
 		var index = 0
 		var remaining: Int { return count - index }
@@ -191,9 +203,9 @@ private var shellPath: String?;
 		resultsStorage.beginEditing()
 		defer {
 			resultsStorage.endEditing()
-			if remaining > 0 && remaining != unprocessedResultsData.count {
-				unprocessedResultsData = Array(
-					unprocessedResultsData[index ..< unprocessedResultsData.endIndex]
+			if remaining > 0 && remaining != unprocessedResults.count {
+				unprocessedResults = Array(
+					unprocessedResults[index ..< unprocessedResults.endIndex]
 				)
 			}
 		}

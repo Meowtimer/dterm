@@ -4,7 +4,7 @@ import ScriptingBridge
 
 private var DTPreferencesContext = 0
 
-@objc public class DTTermWindowController : NSWindowController {
+@objc public class DTTermWindowController : NSWindowController, NSWindowDelegate {
 
 	@IBOutlet var actionButton: NSPopUpButton!
 	@IBOutlet var actionMenu: NSMenu!
@@ -17,14 +17,12 @@ private var DTPreferencesContext = 0
 
 	var workingDirectory: String!
 	var selectedURLs: [URL]!
-	var runs: [DTRunManager]
+	var runs: [DTRunManager] = []
 	var runsController: NSArrayController!
 	
-	required public init?(coder: NSCoder) {
-		self.command = ""
-		self.runs = []
-		super.init(coder: coder)
+	override public func windowDidLoad() {
 		
+		self.command = ""
 		let sdc = NSUserDefaultsController.shared()
 		["values.DTTextColor", "values.DTFontName", "values.DTFontSize"].forEach {
 			sdc.addObserver(self,
@@ -33,15 +31,14 @@ private var DTPreferencesContext = 0
 				context: &DTPreferencesContext
 			)
 		}
-	}
-	
-	override public func windowDidLoad() {
-		guard let panel = self.window as? NSPanel else { return }
-		panel.hidesOnDeactivate = false
+		
+		if let panel = self.window as? NSPanel {
+			panel.hidesOnDeactivate = false
+		}
 		actionButton.bezelStyle = .smallSquare
 		
 		resultsTextView.bind(
-			"DTResultsTextView.resultsStorage",
+			"resultsStorage",
 			to: runsController,
 			withKeyPath: "selection.resultsStorage",
 			options: nil
@@ -57,11 +54,11 @@ private var DTPreferencesContext = 0
 		*/
 	}
 	
-	func windowWillReturnFieldEditor(window: NSWindow, toObject:AnyObject) -> AnyObject? {
+	public func windowWillReturnFieldEditor(_ window: NSWindow, to:AnyObject?) -> AnyObject? {
 		if window !== self.window {
 			return nil
 		}
-		if toObject !== commandField {
+		if to !== commandField {
 			return nil
 		}
 		if commandFieldEditor === nil {
@@ -71,7 +68,7 @@ private var DTPreferencesContext = 0
 		return commandFieldEditor
 	}
 	
-	public var command: String {
+	public var command: String! {
 		didSet {
 			if let firstResponder = window?.firstResponder as? DTCommandFieldEditor, let textStorage = firstResponder.textStorage {
 				// We may be editing.  Make sure the field editor reflects the change too.
@@ -157,22 +154,22 @@ private var DTPreferencesContext = 0
 			.map { escapedPath($0)! }
 	}
 	
-	@IBAction func insertSelection(sender: AnyObject) {
+	@IBAction public func insertSelection(_ sender: AnyObject) {
 		commandFieldEditor.insertFiles(getURLFilePaths(fullPaths: false))
 	}
 	
-	@IBAction func insertSelectionFullPaths(sender: AnyObject) {
+	@IBAction public func insertSelectionFullPaths(_ sender: AnyObject) {
 		commandFieldEditor.insertFiles(getURLFilePaths(fullPaths: true))
 	}
 	
-	@IBAction func pullCommandFromResults(sender: AnyObject) {
+	@IBAction public func pullCommandFromResults(_ sender: AnyObject) {
 		let selection = runsController.selection
 		if let resultsCommand = selection["command"] as? String, let string = commandFieldEditor.string {
 			commandFieldEditor.insertText(resultsCommand, replacementRange: NSMakeRange(0, string.characters.count))
 		}
 	}
 	
-	@IBAction func executeCommand(sender: AnyObject) {
+	@IBAction public func executeCommand(_ sender: AnyObject) {
 		guard let window = self.window, window.makeFirstResponder(window) else { return }
 		guard self.command.characters.count > 0 else { return }
 		
@@ -186,21 +183,21 @@ private var DTPreferencesContext = 0
 		runsController.add(runManager)
 	}
 	
-	@IBAction func executeCommandInTerminal(sender: AnyObject) {
+	@IBAction public func executeCommandInTerminal(_ sender: AnyObject) {
 		// commit editing first
 		guard let window = self.window, window.makeFirstResponder(window) else { return }
 		
 		let appController = NSApp.delegate as! DTAppController
-		let cdCommandString = "cd \(escapedPath(self.workingDirectory))"
+		let cdCommandString = "cd \(escapedPath(self.workingDirectory)!)"
 		appController.numCommandsExecuted += 1
 		runCommand(cdCommandString, self.command)
 	}
 	
-	func cancelOperation(sender: AnyObject) {
+	override public func cancelOperation(_ sender: AnyObject?) {
 		self.deactivate()
 	}
 	
-	@IBAction func copyResultsToClipboard(sender: AnyObject) {
+	@IBAction public func copyResultsToClipboard(_ sender: AnyObject) {
 		let selection = runsController.selection
 		guard let resultsStorage = selection.value(forKey: "resultsStorage") as? NSTextStorage else { return }
 		

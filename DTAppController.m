@@ -131,7 +131,7 @@ OSStatus DTHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 }
 
 - (void)awakeFromNib {
-	termWindowController = [[DTTermWindowController alloc] init];
+	termWindowController = [[DTTermWindowController alloc] initWithWindowNibName:@"TermWindow"];
 	
 	// Install event handler for hotkey events
 	EventTypeSpec theTypeSpec[] =
