@@ -77,6 +77,7 @@ private var shellPath: String?;
 		]
 	}
 	
+	/** FIXME: for the object allocation NSArrayController does - which should not be necessary? */
 	public override init() {
 		workingDirectory = ""
 		command = ""
