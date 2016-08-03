@@ -4,3 +4,6 @@
 #import "DTCommandFieldEditor.h"
 #import "DTShellUtilities.h"
 #import "Terminal.h"
+#import "DTPrefsWindowController.h"
+#import "DSAppleScriptUtilities.h"
+#import "SRCommon.h"

@@ -273,7 +273,7 @@ OSStatus DTHotKeyHandler(EventHandlerCallRef nextHandler,EventRef theEvent,
 	return nil;
 }
 
-- (BOOL)findWindowURL:(NSURL**)windowURL selectionURLs:(NSArray**)selectionURLStrings windowFrame:(NSRect*)windowFrame ofAXApplication:(CFTypeRef)focusedApplication {
+- (BOOL)findWindowURL:(NSURL**)windowURL selectionURLs:(NSArray<NSURL*>**)selectionURLStrings windowFrame:(NSRect*)windowFrame ofAXApplication:(CFTypeRef)focusedApplication {
 	AXError axErr = kAXErrorSuccess;
 	
 	if(windowURL)
@@ -371,7 +371,7 @@ failedAXDocument:	;
 			if((axErr == kAXErrorSuccess) && focusWindow) {
 				// We're good with this! Return the values.
 				if(selectionURLStrings)
-					*selectionURLStrings = [NSArray arrayWithObject:focusedUIElementURLString];
+					*selectionURLStrings = [NSArray<NSURL*> arrayWithObject:[NSURL URLWithString:focusedUIElementURLString]];
 				if(windowFrame)
 					*windowFrame = [self windowFrameOfAXWindow:focusWindow];
 				return YES;
@@ -396,7 +396,7 @@ failedAXDocument:	;
 	
 	NSString* workingDirectory = nil;
 	NSURL* frontWindowURL = nil;
-	NSArray* selectionURLStrings = nil;
+	NSArray<NSURL*>* selectionURLStrings = nil;
 	NSRect frontWindowBounds = NSZeroRect;
 	
 	NSString* frontmostAppBundleID = [[[NSWorkspace sharedWorkspace] activeApplication] objectForKey:@"NSApplicationBundleIdentifier"];

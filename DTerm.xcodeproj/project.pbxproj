@@ -148,6 +148,7 @@
 		25FA3BBD12E6196400DE744A /* MainMenuMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BBB12E6196400DE744A /* MainMenuMAS.xib */; };
 		25FA3BDA12E61ACA00DE744A /* PreferencesMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BD812E61ACA00DE744A /* PreferencesMAS.xib */; };
 		25FA401212F069D300DE744A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FA401112F069D300DE744A /* WebKit.framework */; };
+		582CFCAB1D522B5E0026FF71 /* DTAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582CFCAA1D522B5E0026FF71 /* DTAppController.swift */; };
 		587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587AE1A31D51793900665DB5 /* DTTermWindowController.swift */; };
 		58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -359,6 +360,7 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
+		582CFCAA1D522B5E0026FF71 /* DTAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTAppController.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
 		587AE1A31D51793900665DB5 /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
 		58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTRunManager.swift; sourceTree = "<group>"; };
@@ -421,6 +423,7 @@
 			children = (
 				2500751A0CF0B2B600949B95 /* DTAppController.h */,
 				2500751B0CF0B2B600949B95 /* DTAppController.m */,
+				582CFCAA1D522B5E0026FF71 /* DTAppController.swift */,
 				25E651520CF3B0860072997F /* DTPrefsWindowController.h */,
 				25E651530CF3B0860072997F /* DTPrefsWindowController.m */,
 				25A8719F0D0B157F00D88D65 /* DTPrefsAXController.h */,
@@ -1027,6 +1030,7 @@
 				257158E90CFF9A99007181F4 /* DTShellUtilities.m in Sources */,
 				25878A240D03399E00255595 /* DTProgressCancelButton.m in Sources */,
 				25A871A10D0B157F00D88D65 /* DTPrefsAXController.m in Sources */,
+				582CFCAB1D522B5E0026FF71 /* DTAppController.swift in Sources */,
 				257355F60D108839008E7D0F /* RTFWindowController.m in Sources */,
 				2573569C0D10BBAD008E7D0F /* DSUtilities.m in Sources */,
 				257356A00D10BD1A008E7D0F /* DSPOSTManager.m in Sources */,
