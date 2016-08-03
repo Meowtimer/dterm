@@ -115,14 +115,16 @@ private var shellPath: String?;
 		launch()
 	}
 	
-	public var task: Task!
+	public var task: Task?
 	
 	var stdOut: FileHandle?
 	var stdErr: FileHandle?
 	var unprocessedResults: [Character]
 	
 	func launch() {
-		task = Task()
+		let task = Task()
+		self.task = task
+		
 		task.currentDirectoryPath = self.workingDirectory
 		task.launchPath = DTRunManager.shellPath
 		task.arguments = DTRunManager.arguments(toRunCommand: command)
@@ -356,12 +358,14 @@ private var shellPath: String?;
 	}
 	
 	@IBAction public func cancel(sender: AnyObject) {
-		if task.isRunning {
-			kill(task.processIdentifier, SIGHUP)
+		if let task = self.task {
+			if task.isRunning {
+				kill(task.processIdentifier, SIGHUP)
+			}
+			self.task = nil
+			stdOut = nil
+			stdErr = nil
 		}
-		self.task = nil
-		stdOut = nil
-		stdErr = nil
 	}
 	
 	func handleEscapeSequenceWithType(type: Character, params: [String]) {
