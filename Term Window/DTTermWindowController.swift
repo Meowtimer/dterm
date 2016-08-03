@@ -130,7 +130,7 @@ private var DTPreferencesContext = 0
 		(NSApp.delegate as! DTAppController).saveStats()
 	}
 	
-	func windowDidResignKey(notification: Notification) {
+	public func windowDidResignKey(_ notification: Notification) {
 		guard notification.object === self.window else { return }
 		
 		self.deactivate()
