@@ -1,5 +1,6 @@
 #import "DTAppController.h"
-#import "DTTermWindowController.h"
 #import "DTResultsView.h"
 #import "DTResultsTextView.h"
 #import "DTCommandFieldEditor.h"
+#import "DTShellUtilities.h"
+#import "Terminal.h"

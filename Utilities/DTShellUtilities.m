@@ -1,6 +1,10 @@
 //  Copyright (c) 2007-2010 Decimus Software, Inc. All rights reserved.
 
 #import "DTShellUtilities.h"
+#import "ScriptingBridge/ScriptingBridge.h"
+#import "iTerm.h"
+#import "Terminal.h"
+#import "DTerm-Swift.h"
 
 static NSCharacterSet* charactersToEscape() {
 	static NSCharacterSet* charactersToEscape = nil;
@@ -122,4 +126,64 @@ NSRange lastShellWordBeforeIndex(NSString* command, NSUInteger index) {
 	}
 	
 	return completionRange;
+}
+
+void runCommand(NSString* cdCommandString, NSString* command) {
+	id iTerm = [SBApplication applicationWithBundleIdentifier:@"net.sourceforge.iTerm"];
+	if(!iTerm)
+		iTerm = [SBApplication applicationWithBundleIdentifier:@"com.googlecode.iterm2"];
+	if(iTerm) {
+		id /*iTermTerminal*/ terminal = nil;
+		id /*iTermSession*/ session = nil;
+		
+		if([iTerm isRunning]) {
+			// set terminal to (make new terminal at the end of terminals)
+			terminal = [[[iTerm classForScriptingClass:@"terminal"] alloc] init];
+			[[iTerm terminals] addObject:terminal];
+			
+			// set session to (make new session at the end of sessions)
+			session = [[[iTerm classForScriptingClass:@"session"] alloc] init];
+			[[terminal sessions] addObject:session];
+		} else {
+			// It wasn't running yet, so just use the "current" terminal/session so we don't open more than one
+			terminal = [iTerm currentTerminal];
+			session = [terminal currentSession];
+		}
+		
+		// set shell to system attribute "SHELL"
+		// exec command shell
+		[session execCommand:[DTRunManager shellPath]];
+		
+		// write text "cd ~/whatever"
+		[session writeContentsOfFile:nil text:cdCommandString];
+		
+		// write text "thecommand"
+		[session writeContentsOfFile:nil text:command];
+		
+		[iTerm activate];
+	} else {
+		TerminalApplication* terminal = [SBApplication applicationWithBundleIdentifier:@"com.apple.Terminal"];
+		BOOL terminalAlreadyRunning = [terminal isRunning];
+		
+		TerminalWindow* frontWindow = [[terminal windows] objectAtIndex:0];
+		if(![frontWindow exists])
+			frontWindow = nil;
+		else
+			frontWindow = [frontWindow get];
+		
+		TerminalTab* tab = nil;
+		if(frontWindow) {
+			if(!terminalAlreadyRunning) {
+				tab = [[frontWindow tabs] objectAtIndex:0];
+			} else if(/*terminalUsesTabs*/false) {
+				tab = [[[terminal classForScriptingClass:@"tab"] alloc] init];
+				[[frontWindow tabs] addObject:tab];
+			}
+		}
+		
+		tab = [terminal doScript:cdCommandString in:tab];
+		[terminal doScript:command in:tab];
+		
+		[terminal activate];
+	}
 }

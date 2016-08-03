@@ -6,13 +6,14 @@
 #import "DSAppleScriptUtilities.h"
 #import "DTPrefsRegController.h"
 #import "DTPrefsWindowController.h"
-#import "DTTermWindowController.h"
 #import "Finder.h"
 //#import "Licensing.h"
 #import "PathFinder.h"
 #import "RTFWindowController.h"
 
 #import "DSLicenseFileFinder.h"
+
+#import "DTerm-Swift.h"
 
 #include <sys/xattr.h>
 

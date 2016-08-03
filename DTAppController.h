@@ -3,8 +3,8 @@
 
 #import "SRCommon.h"
 
-@class DTPrefsWindowController;
 @class DTTermWindowController;
+@class DTPrefsWindowController;
 @class RTFWindowController;
 
 #ifndef MAC_APP_STORE

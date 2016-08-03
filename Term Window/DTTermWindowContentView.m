@@ -2,8 +2,6 @@
 
 #import "DTTermWindowContentView.h"
 
-#import "DTTermWindowController.h"
-
 @implementation DTTermWindowContentView
 
 //- (void)resizeSubviewsWithOldSize:(NSSize)oldBoundsSize {

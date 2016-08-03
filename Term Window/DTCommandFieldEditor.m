@@ -4,8 +4,7 @@
 
 #import "DTAppController.h"
 #import "DTShellUtilities.h"
-#import "DTTermWindowController.h"
-
+#import "DTerm-Swift.h"
 
 @implementation DTCommandFieldEditor
 

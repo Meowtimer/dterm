@@ -1,8 +1,7 @@
 //  Copyright (c) 2007-2010 Decimus Software, Inc. All rights reserved.
 
 #import "DTResultsTextView.h"
-
-#import "DTTermWindowController.h"
+#import "DTerm-Swift.h"
 
 @implementation DTResultsTextView
 

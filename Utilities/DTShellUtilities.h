@@ -3,3 +3,4 @@
 NSString* escapedPath(NSString* path);
 NSString* unescapedPath(NSString* path);
 NSRange lastShellWordBeforeIndex(NSString* command, NSUInteger index);
+void runCommand(NSString* cdCommandString, NSString* command);

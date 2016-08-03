@@ -72,7 +72,6 @@
 		25A871A10D0B157F00D88D65 /* DTPrefsAXController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25A871A00D0B157F00D88D65 /* DTPrefsAXController.m */; };
 		25A8745C0D0CE00400D88D65 /* DropLicenseFile.png in Resources */ = {isa = PBXBuildFile; fileRef = 25A8745B0D0CE00400D88D65 /* DropLicenseFile.png */; };
 		25AE84220CF0D208008F96FD /* TermWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25AE84200CF0D208008F96FD /* TermWindow.xib */; };
-		25AE84330CF0D5AA008F96FD /* DTTermWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25AE84320CF0D5AA008F96FD /* DTTermWindowController.m */; };
 		25B10DD00D29D2B40034B100 /* DSUniqueTextStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 25B10DCF0D29D2B40034B100 /* DSUniqueTextStorage.m */; };
 		25BEBAFC0D171C8D00F7A797 /* DTermHelp in Resources */ = {isa = PBXBuildFile; fileRef = 25BEBAE60D171C8D00F7A797 /* DTermHelp */; };
 		25E0070A0DBFCA280092F1E5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25E007090DBFCA280092F1E5 /* IOKit.framework */; };
@@ -116,7 +115,6 @@
 		25FA3B2C12E6118400DE744A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 254036C410FFCDCC0076CE83 /* Localizable.strings */; };
 		25FA3B2E12E6118400DE744A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		25FA3B2F12E6118400DE744A /* DTAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2500751B0CF0B2B600949B95 /* DTAppController.m */; };
-		25FA3B3012E6118400DE744A /* DTTermWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25AE84320CF0D5AA008F96FD /* DTTermWindowController.m */; };
 		25FA3B3112E6118400DE744A /* DTPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651530CF3B0860072997F /* DTPrefsWindowController.m */; };
 		25FA3B3212E6118400DE744A /* SRCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651710CF3B1620072997F /* SRCommon.m */; };
 		25FA3B3312E6118400DE744A /* SRKeyCodeTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651730CF3B1620072997F /* SRKeyCodeTransformer.m */; };
@@ -150,7 +148,7 @@
 		25FA3BBD12E6196400DE744A /* MainMenuMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BBB12E6196400DE744A /* MainMenuMAS.xib */; };
 		25FA3BDA12E61ACA00DE744A /* PreferencesMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BD812E61ACA00DE744A /* PreferencesMAS.xib */; };
 		25FA401212F069D300DE744A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FA401112F069D300DE744A /* WebKit.framework */; };
-		5820F3DA1D4D702C0017648F /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5820F3D91D4D702C0017648F /* DTTermWindowController.swift */; };
+		587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587AE1A31D51793900665DB5 /* DTTermWindowController.swift */; };
 		58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
 		8D11072D0486CEB800E47090 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -321,8 +319,6 @@
 		25A873B30D0CC8DF00D88D65 /* DTPrefsRegController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTPrefsRegController.m; sourceTree = "<group>"; };
 		25A8745B0D0CE00400D88D65 /* DropLicenseFile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = DropLicenseFile.png; path = Images/DropLicenseFile.png; sourceTree = SOURCE_ROOT; };
 		25AE84210CF0D208008F96FD /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/TermWindow.xib; sourceTree = "<group>"; };
-		25AE84310CF0D5AA008F96FD /* DTTermWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTTermWindowController.h; sourceTree = "<group>"; };
-		25AE84320CF0D5AA008F96FD /* DTTermWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTTermWindowController.m; sourceTree = "<group>"; };
 		25B10DCE0D29D2B40034B100 /* DSUniqueTextStorage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DSUniqueTextStorage.h; sourceTree = "<group>"; };
 		25B10DCF0D29D2B40034B100 /* DSUniqueTextStorage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DSUniqueTextStorage.m; sourceTree = "<group>"; };
 		25BEBAE70D171C8D00F7A797 /* English */ = {isa = PBXFileReference; lastKnownFileType = folder; name = English; path = English.lproj/DTermHelp; sourceTree = "<group>"; };
@@ -363,8 +359,8 @@
 		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
-		5820F3D91D4D702C0017648F /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
+		587AE1A31D51793900665DB5 /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
 		58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTRunManager.swift; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8D1107320486CEB800E47090 /* DTerm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DTerm.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -483,8 +479,7 @@
 		25229E1A0CF8981700DF702E /* Term Window */ = {
 			isa = PBXGroup;
 			children = (
-				25AE84310CF0D5AA008F96FD /* DTTermWindowController.h */,
-				25AE84320CF0D5AA008F96FD /* DTTermWindowController.m */,
+				587AE1A31D51793900665DB5 /* DTTermWindowController.swift */,
 				25229FF30CF8BEDE00DF702E /* DTTermWindowContentView.h */,
 				25229FF40CF8BEDE00DF702E /* DTTermWindowContentView.m */,
 				258375640CFF47E600943791 /* DTCommandFieldEditor.h */,
@@ -497,7 +492,6 @@
 				25878A230D03399E00255595 /* DTProgressCancelButton.m */,
 				251D0E5D0D7CA32E00E9E49D /* DTAntialiasControllableTextField.h */,
 				251D0E5E0D7CA32E00E9E49D /* DTAntialiasControllableTextField.m */,
-				5820F3D91D4D702C0017648F /* DTTermWindowController.swift */,
 			);
 			path = "Term Window";
 			sourceTree = "<group>";
@@ -978,7 +972,6 @@
 			files = (
 				25FA3B2E12E6118400DE744A /* main.m in Sources */,
 				25FA3B2F12E6118400DE744A /* DTAppController.m in Sources */,
-				25FA3B3012E6118400DE744A /* DTTermWindowController.m in Sources */,
 				25FA3B3112E6118400DE744A /* DTPrefsWindowController.m in Sources */,
 				25FA3B3212E6118400DE744A /* SRCommon.m in Sources */,
 				25FA3B3312E6118400DE744A /* SRKeyCodeTransformer.m in Sources */,
@@ -1017,9 +1010,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
 				2500751C0CF0B2B600949B95 /* DTAppController.m in Sources */,
-				25AE84330CF0D5AA008F96FD /* DTTermWindowController.m in Sources */,
 				25E651540CF3B0860072997F /* DTPrefsWindowController.m in Sources */,
 				25E6517B0CF3B1620072997F /* SRCommon.m in Sources */,
 				25E6517C0CF3B1620072997F /* SRKeyCodeTransformer.m in Sources */,
@@ -1028,7 +1021,6 @@
 				25E6517F0CF3B1620072997F /* SRValidator.m in Sources */,
 				2529F6BC0CF4CD0700CDF456 /* DTBlackRedStatusTransformer.m in Sources */,
 				25229FF50CF8BEDE00DF702E /* DTTermWindowContentView.m in Sources */,
-				5820F3DA1D4D702C0017648F /* DTTermWindowController.swift in Sources */,
 				2522A1020CFB540500DF702E /* DTResultsTextView.m in Sources */,
 				2583733F0CFE105F00943791 /* DTResultsView.m in Sources */,
 				258375660CFF47E600943791 /* DTCommandFieldEditor.m in Sources */,
