@@ -180,7 +180,7 @@ private var DTPreferencesContext = 0
 			selection: self.selectedURLs,
 			command: self.command
 		)
-		runsController.add(runManager)
+		runsController.addObject(runManager)
 	}
 	
 	@IBAction public func executeCommandInTerminal(_ sender: AnyObject) {
