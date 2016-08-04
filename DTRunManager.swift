@@ -186,9 +186,8 @@ private var shellPath: String?;
 	}
 	
 	func processResultsData() {
-		guard unprocessedResults.count == 0 else { return }
-		
 		var data = unprocessedResults
+		guard data.count > 0 else { return }
 		let count = data.count
 		var index = 0
 		var remaining: Int { return count - index }
