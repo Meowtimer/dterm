@@ -71,8 +71,11 @@ private var DTPreferencesContext = 0
 	public var command: String! {
 		didSet {
 			if let firstResponder = window?.firstResponder as? DTCommandFieldEditor, let textStorage = firstResponder.textStorage {
+				let command = self.command ?? ""
 				// We may be editing.  Make sure the field editor reflects the change too.
-				textStorage.replaceCharacters(in: NSMakeRange(0, textStorage.length), with: command)
+				DispatchQueue.main.async {
+					textStorage.replaceCharacters(in: NSMakeRange(0, textStorage.length), with: command)
+				}
 			}
 		}
 	}
@@ -132,7 +135,6 @@ private var DTPreferencesContext = 0
 	
 	public func windowDidResignKey(_ notification: Notification) {
 		guard notification.object === self.window else { return }
-		
 		self.deactivate()
 	}
 	
