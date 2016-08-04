@@ -1,4 +1,5 @@
-#import "DTAppController.h"
+#import "Cocoa/Cocoa.h"
+#import "Constants.h"
 #import "DTResultsView.h"
 #import "DTResultsTextView.h"
 #import "DTCommandFieldEditor.h"
@@ -7,3 +8,4 @@
 #import "DTPrefsWindowController.h"
 #import "DSAppleScriptUtilities.h"
 #import "SRCommon.h"
+#import "RTFWindowController.h"

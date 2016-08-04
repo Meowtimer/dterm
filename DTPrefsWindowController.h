@@ -26,9 +26,6 @@
 
 - (IBAction)showGeneral:(id)sender;
 - (IBAction)showAccessibility:(id)sender;
-#ifndef MAC_APP_STORE
-- (IBAction)showUpdates:(id)sender;
-#endif
 //- (IBAction)showRegistration:(id)sender;
 
 - (IBAction)showFontPanel:(id)sender;

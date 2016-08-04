@@ -3,7 +3,7 @@
 
 #import "DTPrefsWindowController.h"
 
-#import "DTAppController.h"
+#import "DTerm-Swift.h"
 #import "DTPrefsAXController.h"
 #import "FontNameToDisplayNameTransformer.h"
 #import "SRRecorderControl.h"
@@ -132,24 +132,6 @@
 	
 	[self showView:accessibilityPrefsView];
 }
-#ifndef MAC_APP_STORE
-- (IBAction)showUpdates:(id)sender {
-	// make sure we have a window
-	[self window];
-	
-	// This method can be called programmatically, so make sure updates toolbar icon is selected
-	NSToolbar* toolbar = [[self window] toolbar];
-	for(NSToolbarItem* item in [toolbar items]) {
-		if([item tag] == 3 /* updates tag */) {
-			[toolbar setSelectedItemIdentifier:[item itemIdentifier]];
-			break;
-		}
-	}
-	
-	[self showView:updatesPrefsView];
-}
-#endif
-
 
 //- (IBAction)showRegistration:(id)sender {
 //	// make sure we have a window
@@ -189,6 +171,7 @@
 }
 
 - (IBAction)resetColorAndFont:(id)sender {
+	DTAppController* asd;
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:DTFontNameKey];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:DTFontSizeKey];
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:DTTextColorKey];

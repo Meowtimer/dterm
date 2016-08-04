@@ -1,15 +1,6 @@
 import Foundation
 import Cocoa
 
-let DTUserDefault_ShellPath = "ShellPath"
-let DTResultsToKeepKey = "DTResultsToKeep"
-let DTHotkeyAlsoDeactivatesKey = "DTHotkeyAlsoDeactivates"
-let DTShowDockIconKey = "DTShowDockIcon"
-let DTTextColorKey = "DTTextColor"
-let DTFontNameKey = "DTFontName"
-let DTFontSizeKey = "DTFontSize"
-let DTDisableAntialiasingKey = "DTDisableAntialiasing"
-
 let ASCII_BS  = Character(UnicodeScalar(0x08))
 let ASCII_CR  = Character(UnicodeScalar(0x0D))
 let ASCII_ESC = Character(UnicodeScalar(0x1B))

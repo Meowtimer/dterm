@@ -22,7 +22,6 @@
 
 /* Begin PBXBuildFile section */
 		250074550CF0B1C500949B95 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250074540CF0B1C500949B95 /* Carbon.framework */; };
-		2500751C0CF0B2B600949B95 /* DTAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2500751B0CF0B2B600949B95 /* DTAppController.m */; };
 		250075200CF0B33600949B95 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2500751E0CF0B33600949B95 /* MainMenu.xib */; };
 		250075730CF0C24200949B95 /* ScriptingBridge.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 250075720CF0C24200949B95 /* ScriptingBridge.framework */; };
 		2511B8650D16D201001FDD59 /* DTermLicense.icns in Resources */ = {isa = PBXBuildFile; fileRef = 2511B8640D16D201001FDD59 /* DTermLicense.icns */; };
@@ -114,7 +113,6 @@
 		25FA3B2012E6118400DE744A /* Growl Registration Ticket.growlRegDict in Resources */ = {isa = PBXBuildFile; fileRef = 2525DE5E0D234AE0009A5592 /* Growl Registration Ticket.growlRegDict */; };
 		25FA3B2C12E6118400DE744A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 254036C410FFCDCC0076CE83 /* Localizable.strings */; };
 		25FA3B2E12E6118400DE744A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
-		25FA3B2F12E6118400DE744A /* DTAppController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2500751B0CF0B2B600949B95 /* DTAppController.m */; };
 		25FA3B3112E6118400DE744A /* DTPrefsWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651530CF3B0860072997F /* DTPrefsWindowController.m */; };
 		25FA3B3212E6118400DE744A /* SRCommon.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651710CF3B1620072997F /* SRCommon.m */; };
 		25FA3B3312E6118400DE744A /* SRKeyCodeTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = 25E651730CF3B1620072997F /* SRKeyCodeTransformer.m */; };
@@ -239,8 +237,6 @@
 		089C165DFE840E0CC02AAC07 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		250074540CF0B1C500949B95 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
-		2500751A0CF0B2B600949B95 /* DTAppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTAppController.h; sourceTree = "<group>"; };
-		2500751B0CF0B2B600949B95 /* DTAppController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DTAppController.m; sourceTree = "<group>"; };
 		2500751F0CF0B33600949B95 /* English */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = English; path = English.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		2500756D0CF0C1CF00949B95 /* Finder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Finder.h; sourceTree = "<group>"; };
 		250075720CF0C24200949B95 /* ScriptingBridge.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ScriptingBridge.framework; path = /System/Library/Frameworks/ScriptingBridge.framework; sourceTree = "<absolute>"; };
@@ -362,6 +358,7 @@
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
 		582CFCAA1D522B5E0026FF71 /* DTAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTAppController.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
+		586EFAA21D53CB84006FAB5A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		587AE1A31D51793900665DB5 /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
 		58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTRunManager.swift; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -421,8 +418,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				2500751A0CF0B2B600949B95 /* DTAppController.h */,
-				2500751B0CF0B2B600949B95 /* DTAppController.m */,
 				582CFCAA1D522B5E0026FF71 /* DTAppController.swift */,
 				25E651520CF3B0860072997F /* DTPrefsWindowController.h */,
 				25E651530CF3B0860072997F /* DTPrefsWindowController.m */,
@@ -649,6 +644,7 @@
 		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				586EFAA21D53CB84006FAB5A /* Constants.h */,
 				25E006310DBFBEAE0092F1E5 /* Shared */,
 				25E6515B0CF3B1440072997F /* ShortcutRecorder */,
 				32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */,
@@ -974,7 +970,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				25FA3B2E12E6118400DE744A /* main.m in Sources */,
-				25FA3B2F12E6118400DE744A /* DTAppController.m in Sources */,
 				25FA3B3112E6118400DE744A /* DTPrefsWindowController.m in Sources */,
 				25FA3B3212E6118400DE744A /* SRCommon.m in Sources */,
 				25FA3B3312E6118400DE744A /* SRKeyCodeTransformer.m in Sources */,
@@ -1015,7 +1010,6 @@
 			files = (
 				587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */,
 				8D11072D0486CEB800E47090 /* main.m in Sources */,
-				2500751C0CF0B2B600949B95 /* DTAppController.m in Sources */,
 				25E651540CF3B0860072997F /* DTPrefsWindowController.m in Sources */,
 				25E6517B0CF3B1620072997F /* SRCommon.m in Sources */,
 				25E6517C0CF3B1620072997F /* SRKeyCodeTransformer.m in Sources */,

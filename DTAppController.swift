@@ -12,10 +12,12 @@ private func DTHotKeyHandler(nextHandler: EventHandlerCallRef?, theEvent: EventR
 }
 
 class DTAppController : NSObject, NSApplicationDelegate {
-    
-    public var numCommandsExecuted: UInt
 
-    public var termWindowController: DTTermWindowController!
+	public override init() { }
+
+	public var numCommandsExecuted: Int = 0
+
+	public var termWindowController: DTTermWindowController! = nil
 	
 	public func applicationWillFinishLaunching(_ notification: Notification) {
 		signal(SIGPIPE, SIG_IGN);
@@ -42,8 +44,8 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		NSAppleEventManager.shared().setEventHandler(
 			self,
 			andSelector: #selector(DTAppController.getURL(_:withReplyEvent:)),
-			forEventClass: kInternetEventClass,
-			andEventID: kAEGetURL
+			forEventClass: AEEventClass(kInternetEventClass),
+			andEventID: AEEventID(kAEGetURL)
 		)
 		
 		if UserDefaults.standard.bool(forKey: DTShowDockIconKey) {
@@ -91,21 +93,10 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		loadHotKeyFromUserDefaults()
 	}
 	
-	private var _prefsWindowController: DTPrefsWindowController?
-	public var prefsWindowController: DTPrefsWindowController {
-		get {
-			if let p = _prefsWindowController {
-				return p
-			} else {
-				let p = DTPrefsWindowController()
-				_prefsWindowController = p
-				return p
-			}
-		}
-	}
+	public lazy var prefsWindowController: DTPrefsWindowController = DTPrefsWindowController()
 	
-	private var _hotKey: KeyCombo
-	private var hotKeyRef: EventHotKeyRef?
+	private var _hotKey: KeyCombo = KeyCombo(flags: 0, code: 0)
+	private var hotKeyRef: EventHotKeyRef? = nil
 	public var hotKey: KeyCombo {
 		get { return _hotKey }
 		set {
@@ -118,7 +109,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 			_hotKey = newValue
 			saveHotKeyToUserDefaults()
 			if _hotKey.code != -1 && _hotKey.flags != 0 {
-				let hotKeyID = EventHotKeyID(signature: OSType("htk1")!, id: 1)
+				let hotKeyID = EventHotKeyID(signature: fourCharCodeFrom(string: "htk1"), id: 1)
 				RegisterEventHotKey(
 					UInt32(_hotKey.code),
 					UInt32(SRCocoaToCarbonFlags(_hotKey.flags)),
@@ -153,7 +144,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		self.hotKey = myHotKey
 	}
 	
-    @IBAction public func showPrefs(_ sender: AnyObject!) {
+	@IBAction public func showPrefs(_ sender: AnyObject!) {
 		prefsWindowController.showPrefs(sender)
 	}
 	
@@ -170,7 +161,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		}
 		
 		// convert to CGPoint
-		var realAXPosition: CGPoint
+		var realAXPosition: CGPoint = CGPoint(x: 0, y: 0)
 		if !AXValueGetValue(axPosition as! AXValue, AXValueType(rawValue: kAXValueCGPointType)!, &realAXPosition) {
 			print("Couldn't extract CGPoint from AXPosition")
 			return NSZeroRect
@@ -185,7 +176,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		}
 		
 		// convert to CGSize
-		var realAXSize: CGSize
+		var realAXSize: CGSize = CGSize(width: 0, height: 0)
 		if !AXValueGetValue(axSize as! AXValue, AXValueType(rawValue: kAXValueCGSizeType)!, &realAXSize) {
 			print ("Couldn't extract CGSize from AXSize")
 			return NSZeroRect
@@ -315,6 +306,19 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		
 	}
 	
+	private func getWindowAttributesFromFocusedApplication() -> WindowAttributes? {
+		guard AXIsProcessTrustedWithOptions(nil) else { return nil }
+		var axErr: AXError = .success
+		let systemElement = AXUIElementCreateSystemWide()
+		var focusedApplication: CFTypeRef? = nil
+		axErr = AXUIElementCopyAttributeValue(systemElement, kAXFocusedApplicationAttribute, &focusedApplication)
+		guard axErr == .success && focusedApplication != nil else {
+			print("Couldn't get focusedApplication: \(axErr)")
+			return nil
+		}
+		return self.findWindowAttributesOf(application: focusedApplication as! AXUIElement)
+	}
+	
 	public func hotkeyPressed() {
 	
 		// See if it's already visible
@@ -323,23 +327,104 @@ class DTAppController : NSObject, NSApplicationDelegate {
 			if UserDefaults.standard.bool(forKey: DTHotkeyAlsoDeactivatesKey) {
 				termWindowController.deactivate()
 			}
-			return
 		}
 		
+		guard var windowAttributes = getWindowAttributesFromFocusedApplication() else { return }
+		if !NSEqualRects(windowAttributes.frame, NSZeroRect) {
+			if let screenHeight = NSScreen.screens()?[0].frame.size.height {
+				windowAttributes.frame.origin.y = screenHeight - windowAttributes.frame.origin.y - windowAttributes.frame.size.height
+			}
+		}
 		
+		guard let workingDirectory = (
+			windowAttributes.url.map { (url: URL) -> String? in
+				guard url.isFileURL else { return nil }
+				guard let keys = try? url.resourceValues(forKeys: [URLResourceKey.isPackageKey, URLResourceKey.isDirectoryKey])
+					else { return nil }
+				return keys.isPackage ?? false || !(keys.isDirectory ?? false) ?
+					url.deletingLastPathComponent().path :
+					url.path
+			} ??
+			{ () -> String? in
+				let selection = windowAttributes.selectionURLs
+				guard selection.count > 0 else { return nil }
+				let url = selection[0]
+				return url.deletingLastPathComponent().path
+			}() ??
+			NSHomeDirectory()
+		) else { return }
+		
+		termWindowController.activateWithWorkingDirectory(
+			workingDirectory,
+			selection: windowAttributes.selectionURLs,
+			windowFrame: windowAttributes.frame
+		)
+		
+	}
 	
+	func getURL(_ event: NSAppleEventDescriptor, withReplyEvent reply: NSAppleEventDescriptor) {
+		guard let urlString = event.paramDescriptor(forKeyword: keyDirectObject)?.stringValue else { return }
+		guard let url = URL(string: urlString) else { return }
+		guard url.scheme == "dterm" else { return }
+		
+		let service = url.host
+		if service == "prefs" {
+			let prefsName = url.path
+			switch prefsName {
+				case "/general":
+					self.prefsWindowController.showGeneral(self)
+				case "/accessibility":
+					self.prefsWindowController.showAccessibility(self)
+				default:
+					break
+			}
+		}
+	}
+	
+	private lazy var acknowledgmentsWindowController: RTFWindowController
+		= RTFWindowController(rtfFile: Bundle.main.path(forResource: "Acknowledgements", ofType: "rtf"))
+	private lazy var licenseWindowController: RTFWindowController
+		= RTFWindowController(rtfFile: Bundle.main.path(forResource: "License", ofType: "rtf"))
+
+	@IBAction public func showAcknowledgments(_ sender: AnyObject!) {
+		acknowledgmentsWindowController.showWindow(self)
 	}
 
-    @IBAction public func showAcknowledgments(_ sender: AnyObject!) {
+	@IBAction public func showLicense(_ sender: AnyObject!) {
+		licenseWindowController.showWindow(self)
 	}
 
-    @IBAction public func showLicense(_ sender: AnyObject!) {
-	}
-    
-    public func loadStats() {
-	}
-
-    public func saveStats() {
+	public func loadStats() {
+		let tmp = UserDefaults.standard.integer(forKey: DTNumCommandsRunKey)
+		if tmp > numCommandsExecuted {
+			numCommandsExecuted = tmp
+		}
 	}
 
+	public func saveStats() {
+	}
+	
+	public override func changeFont(_ sender: AnyObject?) {
+		let fontManager = NSFontManager.shared()
+		let selectedFont = fontManager.selectedFont ?? NSFont.systemFont(ofSize: NSFont.systemFontSize())
+		let panelFont = selectedFont
+		let fontSize = NSNumber(floatLiteral: Double(panelFont.pointSize))
+		
+		let currentPrefsValues = NSUserDefaultsController.shared().values
+		currentPrefsValues.setValue(panelFont.fontName, forKey: DTFontNameKey)
+		currentPrefsValues.setValue(fontSize, forKey: DTFontSizeKey)
+	}
+
+}
+
+let DTNumCommandsRunKey = "DTNumCommandsRun"
+let DTNumCommandsRunXattrName = "net.decimus.dterm.commands"
+
+func fourCharCodeFrom(string : String) -> FourCharCode {
+	assert(string.characters.count == 4, "String length must be 4")
+	var result : FourCharCode = 0
+	for char in string.utf16 {
+		result = (result << 8) + FourCharCode(char)
+	}
+	return result
 }

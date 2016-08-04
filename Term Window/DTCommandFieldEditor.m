@@ -2,7 +2,6 @@
 
 #import "DTCommandFieldEditor.h"
 
-#import "DTAppController.h"
 #import "DTShellUtilities.h"
 #import "DTerm-Swift.h"
 
