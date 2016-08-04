@@ -147,6 +147,7 @@
 		25FA3BDA12E61ACA00DE744A /* PreferencesMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BD812E61ACA00DE744A /* PreferencesMAS.xib */; };
 		25FA401212F069D300DE744A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FA401112F069D300DE744A /* WebKit.framework */; };
 		582CFCAB1D522B5E0026FF71 /* DTAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582CFCAA1D522B5E0026FF71 /* DTAppController.swift */; };
+		584BF4891D53D44A000D6FF3 /* AccessibilityHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */; };
 		587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587AE1A31D51793900665DB5 /* DTTermWindowController.swift */; };
 		58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */; };
 		8D11072B0486CEB800E47090 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165CFE840E0CC02AAC07 /* InfoPlist.strings */; };
@@ -357,6 +358,7 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
 		582CFCAA1D522B5E0026FF71 /* DTAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTAppController.swift; sourceTree = "<group>"; };
+		584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelpers.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
 		586EFAA21D53CB84006FAB5A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		587AE1A31D51793900665DB5 /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
@@ -627,6 +629,7 @@
 		29B97314FDCFA39411CA2CEA /* DTerm */ = {
 			isa = PBXGroup;
 			children = (
+				584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				25229E1A0CF8981700DF702E /* Term Window */,
 				2529F6B90CF4CCCE00CDF456 /* Utilities */,
@@ -1032,6 +1035,7 @@
 				257357E60D10F987008E7D0F /* DSDecimalToIntegerTransformer.m in Sources */,
 				25B10DD00D29D2B40034B100 /* DSUniqueTextStorage.m in Sources */,
 				251453C30D720F35000B6100 /* FontNameToDisplayNameTransformer.m in Sources */,
+				584BF4891D53D44A000D6FF3 /* AccessibilityHelpers.swift in Sources */,
 				58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */,
 				251D0E5F0D7CA32E00E9E49D /* DTAntialiasControllableTextField.m in Sources */,
 				25E6DA3E0EB2623F003C1E84 /* DSAppleScriptUtilities.m in Sources */,

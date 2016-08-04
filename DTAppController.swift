@@ -148,68 +148,6 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		prefsWindowController.showPrefs(sender)
 	}
 	
-	func windowFrameOfAXWindow(axWindow: CFTypeRef) -> NSRect {
-		let axWindow = axWindow as! AXUIElement
-		var axErr = AXError.success
-		
-		// get AXPosition of the main window
-		var axPosition: CFTypeRef? = nil
-		axErr = AXUIElementCopyAttributeValue(axWindow , kAXPositionAttribute, &axPosition)
-		if axErr != .success || axPosition == nil {
-			print ("Couln't get AXPosition: \(axErr)")
-			return NSZeroRect
-		}
-		
-		// convert to CGPoint
-		var realAXPosition: CGPoint = CGPoint(x: 0, y: 0)
-		if !AXValueGetValue(axPosition as! AXValue, AXValueType(rawValue: kAXValueCGPointType)!, &realAXPosition) {
-			print("Couldn't extract CGPoint from AXPosition")
-			return NSZeroRect
-		}
-		
-		// get AXSize
-		var axSize: CFTypeRef? = nil
-		axErr = AXUIElementCopyAttributeValue(axWindow , kAXSizeAttribute, &axSize)
-		if axErr != .success || axSize == nil {
-			print ("Couldn't get AXSize: \(axErr)")
-			return NSZeroRect
-		}
-		
-		// convert to CGSize
-		var realAXSize: CGSize = CGSize(width: 0, height: 0)
-		if !AXValueGetValue(axSize as! AXValue, AXValueType(rawValue: kAXValueCGSizeType)!, &realAXSize) {
-			print ("Couldn't extract CGSize from AXSize")
-			return NSZeroRect
-		}
-		
-		return NSRect(
-			origin: CGPoint(x: realAXPosition.x, y: realAXPosition.y + 20.0),
-			size: CGSize(width: realAXSize.width, height: realAXSize.height - 20)
-		)
-	}
-	
-	func fileAXURLStringOfAXUIElement(uiElement: AXUIElement) -> String? {
-		var axURL: CFTypeRef? = nil
-		
-		let axErr = AXUIElementCopyAttributeValue(uiElement, kAXURLAttribute, &axURL)
-		if axErr != .success || axURL == nil {
-			return nil
-		}
-		
-		// OK, we have some kind of AXURL attribute, but that could either be a string or a URL
-		
-		if CFGetTypeID(axURL) == CFStringGetTypeID(), let axURL = axURL as? NSString, axURL.hasPrefix("file:///") {
-			return axURL as String
-		}
-		
-		if CFGetTypeID(axURL) == CFURLGetTypeID(), let axURL = axURL as? URL, axURL.isFileURL {
-			return axURL.absoluteString
-		}
-		
-		// unknown type...
-		return nil
-	}
-	
 	struct WindowAttributes {
 		var url: URL?
 		var selectionURLs: [URL]
@@ -219,8 +157,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 	func findWindowAttributesOf(application: AXUIElement) -> WindowAttributes? {
 		
 		// Mechanism 1: Find front window AXDocument (a CFURL), and use that window
-		
-		let mechanism1: () -> WindowAttributes? = {
+		func mechanism1() -> WindowAttributes? {
 			var axErr: AXError = .success
 			// follow to main window
 			var mainWindow: CFTypeRef? = nil
@@ -242,11 +179,12 @@ class DTAppController : NSObject, NSApplicationDelegate {
 			return WindowAttributes(
 				url: url,
 				selectionURLs: [url],
-				frame: self.windowFrameOfAXWindow(axWindow: mainWindow!)
+				frame: windowFrameOfAXWindow(axWindow: mainWindow!)
 			)
 		}
 		
-		let mechanism2: () -> WindowAttributes? = {
+		// Mechanism 2: Find focused UI element and try to find a selection from it.
+		func mechanism2() -> WindowAttributes? {
 			var axErr: AXError = .success
 			// Does the focused UI element have any selected children or selected rows? Great for file views.
 			var focusedUIElement: CFTypeRef? = nil
@@ -267,7 +205,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 					// If it *worked*, we see if we can extract URLs from these selected children
 					let tmpSelectionURLS: [URL] = (0 ..< Int(CFArrayGetCount(focusedSelectedChildren as! CFArray))).map { (index: Int) in
 						let selectedChild = CFArrayGetValueAtIndex(focusedSelectedChildren as! CFArray, index)
-						return self.fileAXURLStringOfAXUIElement(uiElement: selectedChild as! AXUIElement)
+						return fileAXURLStringOfAXUIElement(uiElement: selectedChild as! AXUIElement)
 					}.flatMap { $0 }.map { URL(string: $0) }.flatMap { $0 }
 					
 					// If we have selection URLs now, grab the window the focused UI element belongs to
@@ -279,14 +217,14 @@ class DTAppController : NSObject, NSApplicationDelegate {
 							return WindowAttributes(
 								url: nil,
 								selectionURLs: tmpSelectionURLS,
-								frame: self.windowFrameOfAXWindow(axWindow: focusWindow!)
+								frame: windowFrameOfAXWindow(axWindow: focusWindow!)
 							)
 						}
 					}
 				}
 			}
 			
-			if let focusedUIElementURLString = self.fileAXURLStringOfAXUIElement(uiElement: focusedUIElement as! AXUIElement), let url = URL(string: focusedUIElementURLString) {
+			if let focusedUIElementURLString = fileAXURLStringOfAXUIElement(uiElement: focusedUIElement as! AXUIElement), let url = URL(string: focusedUIElementURLString) {
 				var focusWindow: CFTypeRef? = nil
 				axErr = AXUIElementCopyAttributeValue(focusedUIElement as! AXUIElement, kAXWindowAttribute, &focusWindow)
 				if axErr == .success, let focusWindow = focusWindow {
@@ -294,7 +232,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 					return WindowAttributes(
 						url: nil,
 						selectionURLs: [url],
-						frame: self.windowFrameOfAXWindow(axWindow: focusWindow)
+						frame: windowFrameOfAXWindow(axWindow: focusWindow)
 					)
 				}
 			}
@@ -329,7 +267,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 			}
 		}
 		
-		guard var windowAttributes = getWindowAttributesFromFocusedApplication() else { return }
+		var windowAttributes = getWindowAttributesFromFocusedApplication() ?? WindowAttributes(url: nil, selectionURLs: [], frame: NSZeroRect)
 		if !NSEqualRects(windowAttributes.frame, NSZeroRect) {
 			if let screenHeight = NSScreen.screens()?[0].frame.size.height {
 				windowAttributes.frame.origin.y = screenHeight - windowAttributes.frame.origin.y - windowAttributes.frame.size.height
@@ -409,7 +347,6 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		let selectedFont = fontManager.selectedFont ?? NSFont.systemFont(ofSize: NSFont.systemFontSize())
 		let panelFont = selectedFont
 		let fontSize = NSNumber(floatLiteral: Double(panelFont.pointSize))
-		
 		let currentPrefsValues = NSUserDefaultsController.shared().values
 		currentPrefsValues.setValue(panelFont.fontName, forKey: DTFontNameKey)
 		currentPrefsValues.setValue(fontSize, forKey: DTFontSizeKey)
