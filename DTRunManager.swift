@@ -7,13 +7,13 @@ let ASCII_ESC = Character(UnicodeScalar(0x1B))
 
 private var shellPath: String?;
 
-@objc public class DTRunManager : NSObject {
+public class DTRunManager : NSObject {
 
     public var workingDirectory: String
     public var selectedURLStrings: [AnyObject]!
 	
-	public private(set) var command: String
-    public private(set) var resultsStorage: NSTextStorage
+	public dynamic private(set) var command: String
+    public dynamic private(set) var resultsStorage: NSTextStorage
 	private var cursorLoc: Int
 	private var resultString: NSString { return resultsStorage.string as NSString }
 
@@ -481,10 +481,7 @@ private var shellPath: String?;
 			
 		default:
 			// If we don't handle it, just ignore it
-			break
-#if DEVBUILD
 			print("Got \(type) escape sequence with: \(params)")
-#endif
 		}
 	}
 
