@@ -43,7 +43,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		
 		NSAppleEventManager.shared().setEventHandler(
 			self,
-			andSelector: #selector(DTAppController.getURL(_:withReplyEvent:)),
+			andSelector: #selector(getURL(_:withReplyEvent:)),
 			forEventClass: AEEventClass(kInternetEventClass),
 			andEventID: AEEventID(kAEGetURL)
 		)

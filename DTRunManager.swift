@@ -106,7 +106,7 @@ private var shellPath: String?;
 		launch()
 	}
 	
-	public var task: Task?
+	public dynamic var task: Task?
 	
 	var stdOut: FileHandle?
 	var stdErr: FileHandle?
@@ -126,6 +126,9 @@ private var shellPath: String?;
 		stdErr = Pipe().fileHandleForReading
 		task.standardError = stdErr
 		
+		// Setting the accessibility flag gives us a sticky egid of 'accessibility', which seems to interfere with shells using .bashrc and whatnot.
+		// We temporarily set our gid back before launching to work around this problem.
+		// Case 8042: http://fogbugz.decimus.net/default.php?8042
 		let savedEGID = getegid()
 		setegid(getgid())
 		task.launch()
@@ -140,7 +143,7 @@ private var shellPath: String?;
 				object: $0
 			)
 		}
-		fileHandles.forEach { $0?.readInBackgroundAndNotify() }
+		fileHandles.forEach { $0!.readInBackgroundAndNotify() }
 	}
 	
 	func readData(notification: Notification) {
