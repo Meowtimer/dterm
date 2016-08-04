@@ -352,14 +352,13 @@ private var shellPath: String?;
 	}
 	
 	@IBAction public func cancel(sender: AnyObject) {
-		if let task = self.task {
-			if task.isRunning {
-				kill(task.processIdentifier, SIGHUP)
-			}
-			self.task = nil
-			stdOut = nil
-			stdErr = nil
+		guard let task = self.task else { return }
+		if task.isRunning {
+			kill(task.processIdentifier, SIGHUP)
 		}
+		self.task = nil
+		stdOut = nil
+		stdErr = nil
 	}
 	
 	func handleEscapeSequenceWithType(type: Character, params: [String]) {
