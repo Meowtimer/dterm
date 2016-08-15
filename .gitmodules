@@ -1,0 +1,3 @@
+[submodule "Dependencies/SwiftScripting"]
+	path = Dependencies/SwiftScripting
+	url = https://github.com/tingraldi/SwiftScripting.git
