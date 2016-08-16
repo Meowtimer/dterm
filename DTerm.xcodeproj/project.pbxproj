@@ -147,6 +147,8 @@
 		25FA3BDA12E61ACA00DE744A /* PreferencesMAS.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25FA3BD812E61ACA00DE744A /* PreferencesMAS.xib */; };
 		25FA401212F069D300DE744A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25FA401112F069D300DE744A /* WebKit.framework */; };
 		582CFCAB1D522B5E0026FF71 /* DTAppController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582CFCAA1D522B5E0026FF71 /* DTAppController.swift */; };
+		584B76331D6143270048920A /* Finder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584B76311D6143270048920A /* Finder.swift */; };
+		584B76341D6143270048920A /* FinderScripting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584B76321D6143270048920A /* FinderScripting.swift */; };
 		584BF4891D53D44A000D6FF3 /* AccessibilityHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */; };
 		587AE1A41D51793900665DB5 /* DTTermWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 587AE1A31D51793900665DB5 /* DTTermWindowController.swift */; };
 		58C78E741D3BA67500EAE6F0 /* DTRunManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58C78E731D3BA67500EAE6F0 /* DTRunManager.swift */; };
@@ -358,7 +360,9 @@
 		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32CA4F630368D1EE00C91783 /* DTerm_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DTerm_Prefix.pch; sourceTree = "<group>"; };
 		582CFCAA1D522B5E0026FF71 /* DTAppController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTAppController.swift; sourceTree = "<group>"; };
-		584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessibilityHelpers.swift; sourceTree = "<group>"; };
+		584B76311D6143270048920A /* Finder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Finder.swift; sourceTree = "<group>"; };
+		584B76321D6143270048920A /* FinderScripting.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FinderScripting.swift; sourceTree = "<group>"; };
+		584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccessibilityHelpers.swift; path = ../AccessibilityHelpers.swift; sourceTree = "<group>"; };
 		586B9C091D3BA5F9006884BC /* DTerm-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "DTerm-Bridging-Header.h"; sourceTree = "<group>"; };
 		586EFAA21D53CB84006FAB5A /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		587AE1A31D51793900665DB5 /* DTTermWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DTTermWindowController.swift; sourceTree = "<group>"; };
@@ -467,6 +471,8 @@
 		2500756C0CF0C1B700949B95 /* ScriptingBridge */ = {
 			isa = PBXGroup;
 			children = (
+				584B76311D6143270048920A /* Finder.swift */,
+				584B76321D6143270048920A /* FinderScripting.swift */,
 				2500756D0CF0C1CF00949B95 /* Finder.h */,
 				2559EB0E0D36EC58002BCF4E /* PathFinder.h */,
 				2529F8E90CF7575000CDF456 /* Terminal.h */,
@@ -499,6 +505,7 @@
 		2529F6B90CF4CCCE00CDF456 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */,
 				2529F6BA0CF4CD0700CDF456 /* DTBlackRedStatusTransformer.h */,
 				2529F6BB0CF4CD0700CDF456 /* DTBlackRedStatusTransformer.m */,
 				257158E70CFF9A99007181F4 /* DTShellUtilities.h */,
@@ -629,7 +636,6 @@
 		29B97314FDCFA39411CA2CEA /* DTerm */ = {
 			isa = PBXGroup;
 			children = (
-				584BF4881D53D44A000D6FF3 /* AccessibilityHelpers.swift */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				25229E1A0CF8981700DF702E /* Term Window */,
 				2529F6B90CF4CCCE00CDF456 /* Utilities */,
@@ -1016,8 +1022,10 @@
 				25E651540CF3B0860072997F /* DTPrefsWindowController.m in Sources */,
 				25E6517B0CF3B1620072997F /* SRCommon.m in Sources */,
 				25E6517C0CF3B1620072997F /* SRKeyCodeTransformer.m in Sources */,
+				584B76341D6143270048920A /* FinderScripting.swift in Sources */,
 				25E6517D0CF3B1620072997F /* SRRecorderCell.m in Sources */,
 				25E6517E0CF3B1620072997F /* SRRecorderControl.m in Sources */,
+				584B76331D6143270048920A /* Finder.swift in Sources */,
 				25E6517F0CF3B1620072997F /* SRValidator.m in Sources */,
 				2529F6BC0CF4CD0700CDF456 /* DTBlackRedStatusTransformer.m in Sources */,
 				25229FF50CF8BEDE00DF702E /* DTTermWindowContentView.m in Sources */,

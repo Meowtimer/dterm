@@ -5,6 +5,7 @@ import ApplicationServices
 import CoreServices
 import CoreFoundation
 import Carbon
+import ScriptingBridge
 
 private func DTHotKeyHandler(nextHandler: EventHandlerCallRef?, theEvent: EventRef?, userData: UnsafeMutablePointer<Void>?) -> OSStatus {
 	(NSApp.delegate as! DTAppController).hotkeyPressed()
@@ -244,7 +245,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		
 	}
 	
-	private func getWindowAttributesFromFocusedApplication() -> WindowAttributes? {
+	private func getWindowAttributesFromFocusedApplicationUsingAccessibility() -> WindowAttributes? {
 		guard AXIsProcessTrustedWithOptions(nil) else { return nil }
 		var axErr: AXError = .success
 		let systemElement = AXUIElementCreateSystemWide()
@@ -257,6 +258,135 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		return self.findWindowAttributesOf(application: focusedApplication as! AXUIElement)
 	}
 	
+	private func getWindowAttributesFromAKitchensinkOfPossibilities() -> WindowAttributes? {
+	
+		let frontmostAppBundleID = NSWorkspace.shared().frontmostApplication?.bundleIdentifier
+		
+		return { () -> WindowAttributes? in
+			switch frontmostAppBundleID ?? "" {
+				case "com.apple.finder":
+		
+					guard let finder = SBApplication(bundleIdentifier: "com.apple.finder") as? FinderApplication else { return nil }
+		
+					let selectionURLStrings = { () -> [String]? in
+						
+						print("selection: \(finder.selection?.get()?.value(forKey: "URL")), insertionLocation: \(finder.insertionLocation?.get()?.value(forKey: "URL"))")
+						
+						guard let selection = { () -> [AnyObject?]? in
+							guard let selection = finder.selection?.get() as? [AnyObject?], selection.count > 0 else { return nil }
+							return selection
+						}() ?? { () -> [AnyObject?]? in
+							guard let insertionLocation = finder.insertionLocation?.get() else { return nil }
+							return [insertionLocation]
+						}() else { return nil }
+						
+						
+						
+						// get the URLs of the selection
+						guard let selectionURLStrings = (selection as? AnyObject)?.value(forKey: "URL") as? [String?] else { return nil }
+						
+						if selectionURLStrings.contains(where: { $0 == nil }) {
+							return nil
+						}
+						return selectionURLStrings.map { $0! }
+					}()
+				
+					let (workingDirectory, frame) = { () -> (String?, NSRect?)? in
+						guard let insertionLocationURL = finder.insertionLocation?.get()?.value(forKey: "URL") as? String,
+							let url = URL(string: insertionLocationURL), url.lastPathComponent == "Desktop"
+							else { return nil }
+						return (url.path, nil)
+					}() ?? { () -> (String?, NSRect?) in
+						guard
+							let frontWindow = finder.FinderWindows?()[0], frontWindow.exists?() ?? false,
+							let urlString = frontWindow.target??.get().value(forKey: "URL") as? String,
+							let url = URL(string: urlString), url.isFileURL
+						
+							else { return (nil, nil) }
+						
+						return (url.path, frontWindow.bounds)
+					}()
+				
+					return WindowAttributes(
+						url: workingDirectory.map { URL(string: $0) } ?? nil,
+						selectionURLs: selectionURLStrings?.map { URL(string: $0) } as? [URL] ?? [],
+						frame: frame ?? NSZeroRect
+					)
+				
+				default:
+					return nil
+			}
+		
+		}() ?? getWindowAttributesFromFocusedApplicationUsingAccessibility()
+		
+		//FinderApplication* finder = [SBApplication applicationWithBundleIdentifier:@"com.apple.finder"];
+		
+		/*
+		// Selection URLs
+		@try {
+//			NSLog(@"selection: %@, insertionLocation: %@",
+//				  [[finder.selection get] valueForKey:@"URL"],
+//				  [[finder.insertionLocation get] valueForKey:@"URL"]);
+			
+			NSArray* selection = [finder.selection get];
+			if(![selection count]) {
+				SBObject* insertionLocation = [finder.insertionLocation get];
+				if(!insertionLocation)
+					return;
+				
+				selection = [NSArray arrayWithObject:insertionLocation];
+			}
+			
+			// Get the URLs of the selection
+			selectionURLStrings = [selection valueForKey:@"URL"];
+			
+			// If any of it ended up as NSNull, dump the whole thing
+			if([selectionURLStrings containsObject:[NSNull null]]) {
+				selection = nil;
+				selectionURLStrings = nil;
+			}
+		}
+		@catch (NSException* e) {
+			// *shrug*...guess we can't get a selection
+		}
+		
+		
+		// If insertion location is desktop, use the desktop as the WD
+		@try {
+			NSString* insertionLocationURL = [[finder.insertionLocation get] valueForKey:@"URL"];
+			if(insertionLocationURL) {
+				NSString* path = [[NSURL URLWithString:insertionLocationURL] path];
+				if([[path lastPathComponent] isEqualToString:@"Desktop"])
+					workingDirectory = path;
+			}
+		}
+		@catch (NSException* e) {
+			// *shrug*...guess we can't get insertion location
+		}
+		
+		// If it wasn't the desktop, grab it from the frontmost window
+		if(!workingDirectory) {
+			@try {
+				FinderFinderWindow* frontWindow = [[finder FinderWindows] objectAtIndex:0];
+				if([frontWindow exists]) {
+					
+					
+					NSString* urlString = [[frontWindow.target get] valueForKey:@"URL"];
+					if(urlString) {
+						NSURL* url = [NSURL URLWithString:urlString];
+						if(url && [url isFileURL]) {
+							frontWindowBounds = frontWindow.bounds;
+							workingDirectory = [url path];
+						}
+					}
+				}
+			}
+			@catch (NSException* e) {
+				// Fall through to the default attempts to set WD from selection
+			}
+		}*/
+	}
+	
 	public func hotkeyPressed() {
 	
 		// See if it's already visible
@@ -267,7 +397,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 			}
 		}
 		
-		var windowAttributes = getWindowAttributesFromFocusedApplication() ?? WindowAttributes(url: nil, selectionURLs: [], frame: NSZeroRect)
+		var windowAttributes = getWindowAttributesFromAKitchensinkOfPossibilities() ?? WindowAttributes(url: nil, selectionURLs: [], frame: NSZeroRect)
 		if !NSEqualRects(windowAttributes.frame, NSZeroRect) {
 			if let screenHeight = NSScreen.screens()?[0].frame.size.height {
 				windowAttributes.frame.origin.y = screenHeight - windowAttributes.frame.origin.y - windowAttributes.frame.size.height
