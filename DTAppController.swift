@@ -149,10 +149,37 @@ class DTAppController : NSObject, NSApplicationDelegate {
 		prefsWindowController.showPrefs(sender)
 	}
 	
-	struct WindowAttributes {
+	struct WindowAttributes : CustomStringConvertible {
 		var url: URL?
 		var selectionURLs: [URL]
 		var frame: NSRect
+		
+		var description: String {
+			return "url: \(url), selectionURLS: \(selectionURLs), frame: \(frame)"
+		}
+		
+		init(
+			url: URL?,
+			selectionURLs: [URL],
+			frame: NSRect
+		) {
+			self.url = url
+			self.selectionURLs = selectionURLs
+			self.frame = frame
+		}
+		
+		init(
+			urlString: String?,
+			selectionURLs: [URL],
+			frame: NSRect
+		) {
+			self.init(
+				url: urlString.map { URL(string: $0.hasPrefix("/") ? "file://\($0)" : $0) } ?? nil,
+				selectionURLs: selectionURLs,
+				frame: frame
+			)
+		}
+		
 	}
 	
 	func findWindowAttributesOf(application: AXUIElement) -> WindowAttributes? {
