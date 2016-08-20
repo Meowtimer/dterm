@@ -299,21 +299,16 @@ class DTAppController : NSObject, NSApplicationDelegate {
 					guard let finder = SBApplication(bundleIdentifier: "com.apple.finder") as? FinderApplication else { return nil }
 		
 					let selectionURLStrings = { () -> [String]? in
-						
-						print("selection: \(finder.selection?.get()?.value(forKey: "URL")), insertionLocation: \(finder.insertionLocation?.get()?.value(forKey: "URL"))")
-						
-						guard let selection = { () -> [AnyObject?]? in
-							guard let selection = finder.selection?.get() as? [AnyObject?], selection.count > 0 else { return nil }
-							return selection
-						}() ?? { () -> [AnyObject?]? in
-							guard let insertionLocation = finder.insertionLocation?.get() else { return nil }
+						guard let selectionURLStrings = { () -> [String?]? in
+							guard
+								let selection = finder.selection?.get()?.value(forKey: "URL"),
+								let count = selection.count
+							else { return nil }
+							return (0..<count).map({ (index: Int) in selection.object(at: index) as? String })
+						}() ?? { () -> [String?]? in
+							guard let insertionLocation = finder.insertionLocation?.get() as? String else { return nil }
 							return [insertionLocation]
 						}() else { return nil }
-						
-						
-						
-						// get the URLs of the selection
-						guard let selectionURLStrings = (selection as? AnyObject)?.value(forKey: "URL") as? [String?] else { return nil }
 						
 						if selectionURLStrings.contains(where: { $0 == nil }) {
 							return nil
@@ -338,7 +333,7 @@ class DTAppController : NSObject, NSApplicationDelegate {
 					}()
 				
 					return WindowAttributes(
-						url: workingDirectory.map { URL(string: $0) } ?? nil,
+						urlString: workingDirectory,
 						selectionURLs: selectionURLStrings?.map { URL(string: $0) } as? [URL] ?? [],
 						frame: frame ?? NSZeroRect
 					)
