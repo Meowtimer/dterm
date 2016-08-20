@@ -273,7 +273,10 @@ class DTAppController : NSObject, NSApplicationDelegate {
 	}
 	
 	private func getWindowAttributesFromFocusedApplicationUsingAccessibility() -> WindowAttributes? {
-		guard AXIsProcessTrustedWithOptions(nil) else { return nil }
+		guard AXIsProcessTrustedWithOptions(nil) else {
+			print("Process not trusted")
+			return nil
+		}
 		var axErr: AXError = .success
 		let systemElement = AXUIElementCreateSystemWide()
 		var focusedApplication: CFTypeRef? = nil
